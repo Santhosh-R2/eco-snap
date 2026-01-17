@@ -55,6 +55,36 @@ const getAllComplaints = async (req, res) => {
     }
 };
 
+// @desc    Get user complaints (User against Employee)
+// @route   GET /api/complaints/user
+// @access  Private (Admin)
+const getUserComplaints = async (req, res) => {
+    try {
+        const complaints = await Complaint.find({ complaintType: "user-against-employee" })
+            .populate("userId", "name email")
+            .populate("employeeId", "name employeeId")
+            .populate("wasteRequestId");
+        res.json(complaints);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Get employee complaints (Employee against User)
+// @route   GET /api/complaints/employee
+// @access  Private (Admin)
+const getEmployeeComplaints = async (req, res) => {
+    try {
+        const complaints = await Complaint.find({ complaintType: "employee-against-user" })
+            .populate("userId", "name email")
+            .populate("employeeId", "name employeeId")
+            .populate("wasteRequestId");
+        res.json(complaints);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 // @desc    Update complaint status
 const updateComplaintStatus = async (req, res) => {
     try {
@@ -72,4 +102,11 @@ const updateComplaintStatus = async (req, res) => {
     }
 };
 
-module.exports = { fileUserComplaint, fileEmployeeComplaint, getAllComplaints, updateComplaintStatus };
+module.exports = {
+    fileUserComplaint,
+    fileEmployeeComplaint,
+    getAllComplaints,
+    getUserComplaints,
+    getEmployeeComplaints,
+    updateComplaintStatus
+};

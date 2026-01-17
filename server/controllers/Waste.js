@@ -19,7 +19,7 @@ const createWasteRequest = async (req, res) => {
         const request = await WasteRequest.create({
             userId,
             image,
-            classification: classification ? JSON.parse(classification) : undefined,
+            classification: classification || undefined,
         });
 
         res.status(201).json(request);

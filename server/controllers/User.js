@@ -6,7 +6,12 @@ const Donation = require("../models/Donation");
 // @route   POST /api/users/register
 // @access  Public
 const registerUser = async (req, res) => {
-    const { name, email, password, role, phone, address, coordinates, profileImage } = req.body;
+    const { name, email, password, role, phone, address, coordinates } = req.body;
+
+    let profileImage = req.body.profileImage || "";
+    if (req.file) {
+        profileImage = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+    }
 
     try {
         const userExists = await User.findOne({ email });

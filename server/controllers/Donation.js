@@ -4,7 +4,12 @@ const Donation = require("../models/Donation");
 // @route   POST /api/donations
 // @access  Private (Citizen)
 const createDonation = async (req, res) => {
-    const { userId, itemType, description, image } = req.body;
+    const { userId, itemType, description } = req.body;
+
+    let image = req.body.image || "";
+    if (req.file) {
+        image = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+    }
 
     try {
         const donation = await Donation.create({

@@ -4,7 +4,12 @@ const WasteRequest = require("../models/WasteRequest");
 // @route   POST /api/waste/request
 // @access  Private (Citizen)
 const createWasteRequest = async (req, res) => {
-    const { userId, classification, image } = req.body;
+    const { userId, classification } = req.body;
+
+    let image = req.body.image || "";
+    if (req.file) {
+        image = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+    }
 
     if (!image) {
         return res.status(400).json({ message: "Image is required." });

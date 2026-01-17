@@ -127,6 +127,24 @@ const getEmployeeTasks = async (req, res) => {
     }
 };
 
+// @desc    Get all tasks (for Admin)
+const getAllTasks = async (req, res) => {
+    try {
+        const tasks = await Task.find({})
+            .populate("employeeId", "name email")
+            .populate({
+                path: "requestId",
+                populate: {
+                    path: "userId",
+                    select: "-password",
+                },
+            });
+        res.json(tasks);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 // @desc    Update task status
 const updateTaskStatus = async (req, res) => {
     try {
@@ -160,4 +178,4 @@ const updateTaskStatus = async (req, res) => {
     }
 };
 
-module.exports = { assignBulkTasks, getEmployeeTasks, updateTaskStatus };
+module.exports = { assignBulkTasks, getEmployeeTasks, updateTaskStatus, getAllTasks };

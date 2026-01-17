@@ -1,0 +1,75 @@
+const Payment = require("../models/Payment");
+const WasteRequest = require("../models/WasteRequest");
+const User = require("../models/User");
+
+// @desc    Process a new monthly payment
+// @route   POST /api/payments
+// @access  Private (Citizen)
+const processPayment = async (req, res) => {
+    const { userId, paymentMethod } = req.body;
+    const now = new Date();
+    const month = now.getMonth() + 1;
+    const year = now.getFullYear();
+
+    try {
+        if (!["UPI", "Bank Transfer"].includes(paymentMethod)) {
+            return res.status(400).json({ message: "Invalid payment method. Only UPI and Bank Transfer are allowed." });
+        }
+
+        // Check if payment already exists for this month
+        const existingPayment = await Payment.findOne({ userId, month, year, status: "completed" });
+        if (existingPayment) {
+            return res.status(400).json({ message: "Payment already made for this month." });
+        }
+
+        // Create payment record
+        const payment = await Payment.create({
+            userId,
+            month,
+            year,
+            amount: 100,
+            paymentMethod,
+            status: "completed",
+            transactionId: `TXN-${Date.now()}`,
+        });
+
+        // Update user's paymentStatus to completed
+        await User.findByIdAndUpdate(userId, { paymentStatus: "completed" });
+
+        res.status(201).json(payment);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Get user payments
+const getUserPayments = async (req, res) => {
+    try {
+        const payments = await Payment.find({ userId: req.params.userId });
+        res.json(payments);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Get all completed payments
+const getAllCompletedPayments = async (req, res) => {
+    try {
+        const completedPayments = await Payment.find({ status: "completed" }).populate("userId", "name email");
+        res.json(completedPayments);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Get all pending payments
+const getPendingPayments = async (req, res) => {
+    try {
+        const pendingPayments = await Payment.find({ status: "pending" }).populate("userId", "name email");
+        res.json(pendingPayments);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { processPayment, getUserPayments, getAllCompletedPayments, getPendingPayments };

@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { fileComplaint, getAllComplaints, updateComplaintStatus } = require("../controllers/Complaint");
+const { fileUserComplaint, fileEmployeeComplaint, getAllComplaints, updateComplaintStatus } = require("../controllers/Complaint");
 
-router.post("/", fileComplaint);
+router.post("/user", fileUserComplaint);
+router.post("/employee", fileEmployeeComplaint);
 router.get("/", getAllComplaints);
 router.put("/:id", updateComplaintStatus);
 

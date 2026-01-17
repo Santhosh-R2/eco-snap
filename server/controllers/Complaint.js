@@ -1,23 +1,39 @@
 const Complaint = require("../models/Complaint");
 
-// @desc    File a complaint (User against Employee OR Employee against User)
-// @route   POST /api/complaints
-// @access  Private (Citizen or Employee)
-const fileComplaint = async (req, res) => {
-    const { userId, employeeId, wasteRequestId, description, complaintType } = req.body;
+// @desc    File a complaint (User against Employee)
+// @route   POST /api/complaints/user
+// @access  Private (Citizen)
+const fileUserComplaint = async (req, res) => {
+    const { userId, employeeId, wasteRequestId, description } = req.body;
 
     try {
-        // Validate complaintType
-        if (!["user-against-employee", "employee-against-user"].includes(complaintType)) {
-            return res.status(400).json({ message: "Invalid complaint type" });
-        }
-
         const complaint = await Complaint.create({
             userId,
             employeeId,
             wasteRequestId,
             description,
-            complaintType,
+            complaintType: "user-against-employee",
+        });
+
+        res.status(201).json(complaint);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    File a complaint (Employee against User)
+// @route   POST /api/complaints/employee
+// @access  Private (Employee)
+const fileEmployeeComplaint = async (req, res) => {
+    const { userId, employeeId, wasteRequestId, description } = req.body;
+
+    try {
+        const complaint = await Complaint.create({
+            userId,
+            employeeId,
+            wasteRequestId,
+            description,
+            complaintType: "employee-against-user",
         });
 
         res.status(201).json(complaint);
@@ -56,4 +72,4 @@ const updateComplaintStatus = async (req, res) => {
     }
 };
 
-module.exports = { fileComplaint, getAllComplaints, updateComplaintStatus };
+module.exports = { fileUserComplaint, fileEmployeeComplaint, getAllComplaints, updateComplaintStatus };

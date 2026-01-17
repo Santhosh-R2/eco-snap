@@ -6,9 +6,7 @@ const {
     updateWasteRequestStatus,
     getWasteRequestById,
 } = require("../controllers/Waste");
-const upload = require("../middleware/upload");
-
-router.post("/request", upload.single("image"), createWasteRequest);
+router.post("/request", createWasteRequest);
 router.get("/requests", getWasteRequests);
 router.get("/requests/:id", getWasteRequestById);
 router.put("/requests/:id", updateWasteRequestStatus);

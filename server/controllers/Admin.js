@@ -25,8 +25,7 @@ const adminLogin = async (req, res) => {
 // @route   POST /api/admin/employee
 // @access  Private (Admin)
 const addEmployee = async (req, res) => {
-    const { name, email, password, phone, address, employeeId, aadhaarNumber } = req.body;
-    const profileImage = req.file ? req.file.path : "";
+    const { name, email, password, phone, address, employeeId, aadhaarNumber, profileImage } = req.body;
 
     try {
         const userExists = await User.findOne({ email });

@@ -7,9 +7,7 @@ const {
     claimDonation,
 } = require("../controllers/Donation");
 const { assignDonationTask } = require("../controllers/DonationTask");
-const upload = require("../middleware/upload");
-
-router.post("/", upload.single("image"), createDonation);
+router.post("/", createDonation);
 router.get("/", getDonations);
 router.post("/assign", assignDonationTask);
 router.put("/:id/claim", claimDonation);

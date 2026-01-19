@@ -108,11 +108,12 @@ const getDashboardStats = async (req, res) => {
 
         // Donation Stats
         const totalDonations = await Donation.countDocuments();
-        const pendingDonations = await Donation.countDocuments({ status: "pending" });
-        const completedDonations = await Donation.countDocuments({ status: "completed" }); // Assuming "completed" or "collected" status
+        const availableDonations = await Donation.countDocuments({ status: "available" });
+        const assignedDonations = await Donation.countDocuments({ status: "assigned" });
+        const claimedDonations = await Donation.countDocuments({ status: "claimed" });
 
         // Waste Request Stats (Month-wise)
-        // This is a simplified aggregation, grouping by month of creation
+        // Aggregating by month for pending, scheduled, and completed statuses
         const wasteRequestStats = await WasteRequest.aggregate([
             {
                 $group: {
@@ -121,7 +122,10 @@ const getDashboardStats = async (req, res) => {
                         $sum: { $cond: [{ $eq: ["$status", "completed"] }, 1, 0] }
                     },
                     pending: {
-                        $sum: { $cond: [{ $in: ["$status", ["pending", "scheduled"]] }, 1, 0] }
+                        $sum: { $cond: [{ $eq: ["$status", "pending"] }, 1, 0] }
+                    },
+                    scheduled: {
+                        $sum: { $cond: [{ $eq: ["$status", "scheduled"] }, 1, 0] }
                     }
                 }
             },
@@ -136,8 +140,9 @@ const getDashboardStats = async (req, res) => {
             },
             donationChart: {
                 total: totalDonations,
-                pending: pendingDonations,
-                completed: completedDonations
+                available: availableDonations,
+                assigned: assignedDonations,
+                claimed: claimedDonations
             },
             wasteChart: wasteRequestStats
         });

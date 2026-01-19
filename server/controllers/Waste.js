@@ -76,4 +76,20 @@ const getWasteRequestById = async (req, res) => {
     }
 };
 
-module.exports = { createWasteRequest, getWasteRequests, updateWasteRequestStatus, getWasteRequestById };
+// @desc    Get all paymented waste requests
+const getPaymentedWasteRequests = async (req, res) => {
+    try {
+        const requests = await WasteRequest.find({ status: "Paymented" }).populate("userId", "name email phone address");
+        res.json(requests);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = {
+    createWasteRequest,
+    getWasteRequests,
+    updateWasteRequestStatus,
+    getWasteRequestById,
+    getPaymentedWasteRequests
+};

@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import AdminLogin from './components/AdminLogin'
 import AdminLayout from './components/AdminLayout'
 import AdminDashboard from './components/AdminDashboard'
-
+import ViewAllEmployees from './components/ViewAllEmployees'
+import ViewAllUsers from './components/ViewAllUsers'
 function App() {
   return (
     <Router>
@@ -13,7 +14,8 @@ function App() {
         {/* Admin Section with Layout */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="employees" element={<h2>Employees</h2>} />
+          <Route path="employees" element={<ViewAllEmployees />} />
+          <Route path="users" element={<ViewAllUsers />} />
           <Route path="waste-requests" element={<h2>Waste Requests</h2>} />
           <Route path="donations" element={<h2>Donations</h2>} />
           <Route path="tasks" element={<h2>Tasks</h2>} />

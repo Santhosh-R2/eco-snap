@@ -1,0 +1,189 @@
+/* viewAllUsers.css */
+
+/* --- Container --- */
+.users-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    font-family: 'Inter', sans-serif;
+}
+
+/* --- Header Section --- */
+.users-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.users-title h2 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #103926; /* Eco Green */
+    letter-spacing: -0.5px;
+    margin: 0;
+}
+
+.users-subtitle {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-top: 4px;
+}
+
+/* --- Search Bar --- */
+.user-search-box {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 0.5rem 1rem;
+    width: 300px;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.user-search-box:focus-within {
+    border-color: #103926;
+    box-shadow: 0 0 0 3px rgba(16, 57, 38, 0.1);
+}
+
+.search-input-field {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 0.95rem;
+    color: #374151;
+    background: transparent;
+    margin-left: 8px;
+}
+
+/* --- Table Styling --- */
+.users-table-card {
+    background: #ffffff;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+    border: 1px solid #f3f4f6;
+    overflow: hidden;
+}
+
+.users-table-head {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.head-cell {
+    color: #4b5563 !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 1rem 1.5rem !important;
+}
+
+.table-row-hover {
+    transition: background-color 0.15s ease;
+}
+
+.table-row-hover:hover {
+    background-color: #f9fafb;
+}
+
+.data-cell {
+    padding: 1rem 1.5rem !important;
+    border-bottom: 1px solid #f3f4f6 !important;
+    color: #374151 !important;
+    vertical-align: middle !important;
+}
+
+/* --- User Profile Cell --- */
+.user-profile-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-avatar {
+    width: 42px !important;
+    height: 42px !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.user-text-info h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.user-email-small {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    display: none; /* Only show on very small screens if needed, otherwise hidden */
+}
+
+/* --- Contact Info --- */
+.contact-main {
+    font-size: 0.9rem;
+    color: #374151;
+}
+
+.contact-sub {
+    font-size: 0.8rem;
+    color: #9ca3af;
+}
+
+/* --- Address Handling --- */
+.address-text {
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.9rem;
+    color: #4b5563;
+}
+
+/* --- Status Badge --- */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    gap: 6px;
+}
+
+.status-pill.active {
+    background-color: #ecfdf5;
+    color: #047857;
+    border: 1px solid #d1fae5;
+}
+
+.status-pill.inactive {
+    background-color: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fee2e2;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+}
+
+/* --- Loading --- */
+.loading-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+    color: #6b7280;
+}

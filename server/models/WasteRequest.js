@@ -16,7 +16,7 @@ const wasteRequestSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["pending", "scheduled", "completed", "cancelled"],
+        enum: ["pending", "scheduled", "completed", "Paymented"],
         default: "pending",
     },
     scheduledDate: {

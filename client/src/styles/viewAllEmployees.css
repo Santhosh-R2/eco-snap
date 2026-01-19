@@ -1,0 +1,214 @@
+/* viewAllEmployees.css */
+
+/* --- Page Layout --- */
+.page-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    font-family: 'Inter', sans-serif;
+}
+
+/* --- Header Section --- */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.header-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #103926; /* Eco Green */
+    letter-spacing: -0.5px;
+}
+
+.header-subtitle {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-top: 4px;
+}
+
+/* --- Search Bar --- */
+.search-bar-container {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 0.5rem 1rem;
+    width: 320px;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.search-bar-container:focus-within {
+    border-color: #103926;
+    box-shadow: 0 0 0 3px rgba(16, 57, 38, 0.1);
+}
+
+.search-icon {
+    color: #9ca3af;
+    margin-right: 0.75rem;
+}
+
+.search-input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 0.95rem;
+    color: #374151;
+}
+
+/* --- Table Styles --- */
+.table-card {
+    background: #ffffff;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+    border: 1px solid #f3f4f6;
+    overflow: hidden;
+}
+
+.custom-table-head {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.header-cell {
+    color: #4b5563 !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 1rem 1.5rem !important;
+}
+
+.body-row {
+    transition: background-color 0.15s ease;
+}
+
+.body-row:hover {
+    background-color: #f9fafb;
+}
+
+.body-cell {
+    padding: 1rem 1.5rem !important;
+    border-bottom: 1px solid #f3f4f6 !important;
+    color: #374151 !important;
+}
+
+/* --- Employee Profile Column --- */
+.profile-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.employee-avatar {
+    width: 45px !important;
+    height: 45px !important;
+    font-weight: 600 !important;
+    font-size: 1.1rem !important;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.employee-info h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.employee-id {
+    font-size: 0.8rem;
+    color: #6b7280;
+    margin-top: 2px;
+}
+
+/* --- Contact Info --- */
+.contact-text {
+    font-size: 0.9rem;
+    color: #374151;
+}
+
+.contact-sub {
+    font-size: 0.8rem;
+    color: #9ca3af;
+}
+
+/* --- Role Badges --- */
+.role-badge {
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    display: inline-block;
+}
+
+.role-badge.driver {
+    background-color: #eff6ff;
+    color: #3b82f6;
+    border: 1px solid #dbeafe;
+}
+
+.role-badge.collector {
+    background-color: #fff7ed;
+    color: #f97316;
+    border: 1px solid #ffedd5;
+}
+
+.role-badge.manager {
+    background-color: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #dcfce7;
+}
+
+.role-badge.default {
+    background-color: #f3f4f6;
+    color: #4b5563;
+}
+
+/* --- Status Styles --- */
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-active {
+    color: #059669;
+}
+.status-active .dot {
+    background-color: #059669;
+    box-shadow: 0 0 0 2px #d1fae5;
+}
+
+.status-inactive {
+    color: #6b7280;
+}
+.status-inactive .dot {
+    background-color: #9ca3af;
+}
+
+/* --- Loading State --- */
+.loading-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    flex-direction: column;
+    gap: 1rem;
+    color: #6b7280;
+}

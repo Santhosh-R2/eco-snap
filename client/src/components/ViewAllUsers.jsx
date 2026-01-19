@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
     Box,
-    Typography,
     Paper,
     Table,
     TableBody,
@@ -10,15 +9,17 @@ import {
     TableHead,
     TableRow,
     Avatar,
-    Chip,
     Switch,
-    IconButton,
-    InputBase,
-    CircularProgress
+    CircularProgress,
+    Tooltip,
+    Typography
 } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import axios from '../baseUrl';
 import toast from 'react-hot-toast';
+
+// Import CSS
+import '../styles/viewAllUsers.css';
 
 const ViewAllUsers = () => {
     const [users, setUsers] = useState([]);
@@ -28,11 +29,14 @@ const ViewAllUsers = () => {
     const fetchUsers = async () => {
         try {
             const response = await axios.get('/admin/users');
-            setUsers(response.data);
-            setLoading(false);
+            console.log(response);
+            // Safely handle response data
+            const data = Array.isArray(response.data) ? response.data : (response.data.users || []);
+            setUsers(data);
         } catch (error) {
             console.error('Error fetching users:', error);
-            toast.error('Failed to load users');
+            toast.error('Failed to load user database');
+        } finally {
             setLoading(false);
         }
     };
@@ -41,114 +45,156 @@ const ViewAllUsers = () => {
         fetchUsers();
     }, []);
 
+    // Optimistic UI Update for smoother experience
     const handleStatusChange = async (id, currentStatus) => {
+        // 1. Update UI immediately
+        const updatedUsers = users.map(user => 
+            user._id === id ? { ...user, isActive: !currentStatus } : user
+        );
+        setUsers(updatedUsers);
+
         try {
+            // 2. Make API call
             await axios.put(`/admin/user/${id}/status`, { isActive: !currentStatus });
             toast.success(`User ${!currentStatus ? 'activated' : 'deactivated'} successfully`);
-            fetchUsers(); // Refresh list
         } catch (error) {
+            // 3. Revert if API fails
             console.error('Error updating status:', error);
             toast.error('Failed to update status');
+            setUsers(users); // Revert to previous state
         }
     };
 
+    // Helper: Generate consistent colors for avatars based on name
+    const stringToColor = (string) => {
+        let hash = 0;
+        for (let i = 0; i < string.length; i++) {
+            hash = string.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        const c = (hash & 0x00ffffff).toString(16).toUpperCase();
+        return '#' + '00000'.substring(0, 6 - c.length) + c;
+    };
+
     const filteredUsers = users.filter(user =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase())
+        (user.name && user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (user.email && user.email.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
     if (loading) {
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
+            <div className="loading-wrapper">
                 <CircularProgress style={{ color: '#103926' }} />
-            </Box>
+                <p style={{ marginTop: '1rem' }}>Loading User Data...</p>
+            </div>
         );
     }
 
     return (
-        <Box sx={{ p: 3 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-                <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#1a237e' }}>
-                    Manage Users
-                </Typography>
+        <div className="users-container">
+            {/* Header */}
+            <div className="users-header">
+                <div className="users-title">
+                    <h2>Citizen Management</h2>
+                    <p className="users-subtitle">Monitor and manage registered citizens.</p>
+                </div>
 
-                <Paper
-                    component="form"
-                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 300, borderRadius: '20px' }}
-                >
-                    <InputBase
-                        sx={{ ml: 1, flex: 1 }}
+                <div className="user-search-box">
+                    <Search sx={{ color: '#9ca3af' }} />
+                    <input
+                        type="text"
                         placeholder="Search users..."
+                        className="search-input-field"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
-                    <IconButton sx={{ p: '10px' }} aria-label="search">
-                        <Search />
-                    </IconButton>
-                </Paper>
-            </Box>
+                </div>
+            </div>
 
-            <TableContainer component={Paper} sx={{ borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.05)' }}>
-                <Table sx={{ minWidth: 650 }} aria-label="users table">
-                    <TableHead sx={{ backgroundColor: '#f8fafc' }}>
+            {/* Table */}
+            <TableContainer component={Paper} className="users-table-card" elevation={0}>
+                <Table sx={{ minWidth: 750 }} aria-label="users table">
+                    <TableHead className="users-table-head">
                         <TableRow>
-                            <TableCell sx={{ fontWeight: 'bold', color: '#64748b' }}>User</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold', color: '#64748b' }}>Contact</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold', color: '#64748b' }}>Address</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold', color: '#64748b' }}>Status</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold', color: '#64748b', textAlign: 'center' }}>Active</TableCell>
+                            <TableCell className="head-cell">User Profile</TableCell>
+                            <TableCell className="head-cell">Contact Info</TableCell>
+                            <TableCell className="head-cell">Address</TableCell>
+                            <TableCell className="head-cell">Status</TableCell>
+                            <TableCell className="head-cell" align="center">Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {filteredUsers.map((user) => (
-                            <TableRow
-                                key={user._id}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                                        <Avatar src={user.profileImage} alt={user.name} sx={{ bgcolor: '#0288d1' }}>
-                                            {user.name.charAt(0)}
-                                        </Avatar>
-                                        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{user.name}</Typography>
-                                    </Box>
-                                </TableCell>
-                                <TableCell>
-                                    <Typography variant="body2">{user.email}</Typography>
-                                    <Typography variant="caption" color="textSecondary">{user.phone}</Typography>
-                                </TableCell>
-                                <TableCell sx={{ maxWidth: 300 }}>
-                                    <Typography variant="body2" noWrap>{user.address || 'N/A'}</Typography>
-                                </TableCell>
-                                <TableCell>
-                                    <Chip
-                                        label={user.isActive ? 'Active' : 'Inactive'}
-                                        size="small"
-                                        color={user.isActive ? 'success' : 'error'}
-                                        variant="outlined"
-                                    />
-                                </TableCell>
-                                <TableCell align="center">
-                                    <Switch
-                                        checked={user.isActive}
-                                        onChange={() => handleStatusChange(user._id, user.isActive)}
-                                        color="primary"
-                                        size="small"
-                                    />
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                        {filteredUsers.length === 0 && (
+                        {filteredUsers.length > 0 ? (
+                            filteredUsers.map((user) => (
+                                <TableRow key={user._id} className="table-row-hover">
+                                    {/* Profile */}
+                                    <TableCell className="data-cell">
+                                        <div className="user-profile-group">
+                                            <Avatar 
+                                                src={user.profileImage} 
+                                                alt={user.name}
+                                                className="user-avatar"
+                                                sx={{ bgcolor: stringToColor(user.name || 'U') }}
+                                            >
+                                                {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                                            </Avatar>
+                                            <div className="user-text-info">
+                                                <h4>{user.name}</h4>
+                                            </div>
+                                        </div>
+                                    </TableCell>
+
+                                    {/* Contact */}
+                                    <TableCell className="data-cell">
+                                        <div className="contact-main">{user.email}</div>
+                                    </TableCell>
+
+                                    {/* Address */}
+                                    <TableCell className="data-cell">
+                                        <Tooltip title={user.address || "No Address Provided"}>
+                                            <div className="address-text">
+                                                {user.address || 'N/A'}
+                                            </div>
+                                        </Tooltip>
+                                    </TableCell>
+
+                                    {/* Status Pill */}
+                                    <TableCell className="data-cell">
+                                        <div className={`status-pill ${user.isActive ? 'active' : 'inactive'}`}>
+                                            <span className="status-dot"></span>
+                                            {user.isActive ? 'Active' : 'Inactive'}
+                                        </div>
+                                    </TableCell>
+
+                                    {/* Actions */}
+                                    <TableCell className="data-cell" align="center">
+                                        <Tooltip title={user.isActive ? "Deactivate User" : "Activate User"}>
+                                            <Switch
+                                                checked={user.isActive}
+                                                onChange={() => handleStatusChange(user._id, user.isActive)}
+                                                sx={{
+                                                    '& .MuiSwitch-switchBase.Mui-checked': {
+                                                        color: '#103926',
+                                                    },
+                                                    '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                                                        backgroundColor: '#103926',
+                                                    },
+                                                }}
+                                            />
+                                        </Tooltip>
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                        ) : (
                             <TableRow>
-                                <TableCell colSpan={5} align="center" sx={{ py: 3 }}>
-                                    <Typography color="textSecondary">No users found</Typography>
+                                <TableCell colSpan={5} align="center" sx={{ py: 6 }}>
+                                    <Typography color="textSecondary">No users found.</Typography>
                                 </TableCell>
                             </TableRow>
                         )}
                     </TableBody>
                 </Table>
             </TableContainer>
-        </Box>
+        </div>
     );
 };
 

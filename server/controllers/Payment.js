@@ -36,6 +36,18 @@ const processPayment = async (req, res) => {
         // Update user's paymentStatus to completed
         await User.findByIdAndUpdate(userId, { paymentStatus: "completed" });
 
+        // Update users WasteRequests for the current month to "Paymented"
+        const startOfMonth = new Date(year, month - 1, 1);
+        const endOfMonth = new Date(year, month, 0, 23, 59, 59, 999);
+
+        await WasteRequest.updateMany(
+            {
+                userId,
+                createdAt: { $gte: startOfMonth, $lte: endOfMonth }
+            },
+            { status: "Paymented" }
+        );
+
         res.status(201).json(payment);
     } catch (error) {
         res.status(500).json({ message: error.message });

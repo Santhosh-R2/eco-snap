@@ -5,11 +5,13 @@ const {
     getWasteRequests,
     updateWasteRequestStatus,
     getWasteRequestById,
+    getPaymentedWasteRequests,
 } = require("../controllers/Waste");
 const upload = require("../middleware/upload");
 
 router.post("/request", upload.single("image"), createWasteRequest);
 router.get("/requests", getWasteRequests);
+router.get("/requests/paymented", getPaymentedWasteRequests);
 router.get("/requests/:id", getWasteRequestById);
 router.put("/requests/:id", updateWasteRequestStatus);
 

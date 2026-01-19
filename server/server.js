@@ -10,7 +10,8 @@ const taskRoutes = require("./routes/TaskRoute");
 const paymentRoutes = require("./routes/PaymentRoute");
 const complaintRoutes = require("./routes/ComplaintRoute");
 const app = express();
-
+const cors = require("cors")
+app.use(cors())
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 

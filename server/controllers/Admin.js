@@ -1,5 +1,8 @@
 const Admin = require("../models/Admin");
 const User = require("../models/User");
+const Task = require("../models/Task");
+const Donation = require("../models/Donation");
+const WasteRequest = require("../models/WasteRequest");
 
 const adminLogin = async (req, res) => {
     const { email, password } = req.body;
@@ -94,4 +97,54 @@ const updateEmployeeStatus = async (req, res) => {
     }
 };
 
-module.exports = { adminLogin, addEmployee, updateEmployeeStatus };
+// @desc    Get dashboard statistics
+// @route   GET /api/admin/dashboard-stats
+// @access  Private (Admin)
+const getDashboardStats = async (req, res) => {
+    try {
+        const totalUsers = await User.countDocuments({ role: "citizen" });
+        const totalEmployees = await User.countDocuments({ role: "employee" });
+        const completedTasks = await Task.countDocuments({ status: "completed" });
+
+        // Donation Stats
+        const totalDonations = await Donation.countDocuments();
+        const pendingDonations = await Donation.countDocuments({ status: "pending" });
+        const completedDonations = await Donation.countDocuments({ status: "completed" }); // Assuming "completed" or "collected" status
+
+        // Waste Request Stats (Month-wise)
+        // This is a simplified aggregation, grouping by month of creation
+        const wasteRequestStats = await WasteRequest.aggregate([
+            {
+                $group: {
+                    _id: { $month: "$createdAt" },
+                    completed: {
+                        $sum: { $cond: [{ $eq: ["$status", "completed"] }, 1, 0] }
+                    },
+                    pending: {
+                        $sum: { $cond: [{ $in: ["$status", ["pending", "scheduled"]] }, 1, 0] }
+                    }
+                }
+            },
+            { $sort: { _id: 1 } } // Sort by month
+        ]);
+
+        res.json({
+            counts: {
+                users: totalUsers,
+                employees: totalEmployees,
+                completedTasks: completedTasks
+            },
+            donationChart: {
+                total: totalDonations,
+                pending: pendingDonations,
+                completed: completedDonations
+            },
+            wasteChart: wasteRequestStats
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { adminLogin, addEmployee, updateEmployeeStatus, getDashboardStats };

@@ -1,0 +1,163 @@
+/* adminLayoutStyles.css */
+
+:root {
+    --primary-green: #103926;
+    --primary-light: #154034;
+    --accent-green: #22c55e;
+    --bg-light: #f3f4f6;
+    --sidebar-bg: #ffffff;
+    --text-dark: #1f2937;
+    --text-muted: #6b7280;
+    --active-bg: #ecfdf5; /* Very light green */
+    --hover-bg: #f9fafb;
+    --border-color: #e5e7eb;
+}
+
+/* --- Main Layout Containers --- */
+.layout-root {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--bg-light);
+    font-family: 'Inter', sans-serif;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 2rem;
+    margin-top: 64px; /* Height of AppBar */
+    overflow-x: hidden;
+    min-height: 100vh;
+    background-color: var(--bg-light);
+}
+
+/* --- AppBar (Header) --- */
+.admin-appbar {
+    background-color: #ffffff !important;
+    color: var(--text-dark) !important;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+    z-index: 1201 !important; /* Above Drawer */
+}
+
+.header-title {
+    font-weight: 700 !important;
+    font-size: 1.25rem !important;
+    color: var(--primary-green);
+}
+
+.profile-btn {
+    margin-left: auto;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 50% !important;
+    padding: 4px !important;
+    transition: all 0.2s ease !important;
+}
+
+.profile-btn:hover {
+    background-color: var(--hover-bg) !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* --- Sidebar (Drawer) --- */
+.sidebar-paper {
+    background-color: var(--sidebar-bg) !important;
+    border-right: 1px solid var(--border-color) !important;
+    width: 260px !important; /* Slightly wider for better breathing room */
+}
+
+.sidebar-header {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logo-text {
+    font-weight: 800 !important;
+    font-size: 1.2rem !important;
+    color: var(--primary-green);
+    letter-spacing: -0.5px;
+}
+
+/* --- Navigation Items --- */
+.nav-list {
+    padding: 1rem 0.75rem !important;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.nav-item {
+    border-radius: 8px !important;
+    margin-bottom: 2px !important;
+    color: var(--text-muted) !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+.nav-item:hover {
+    background-color: var(--hover-bg) !important;
+    color: var(--primary-green) !important;
+    transform: translateX(3px);
+}
+
+/* Active State styling */
+.nav-item.active {
+    background-color: var(--active-bg) !important;
+    color: var(--primary-green) !important;
+    font-weight: 600 !important;
+}
+
+.nav-item.active .MuiListItemIcon-root {
+    color: var(--primary-green) !important;
+}
+
+/* Icon styling */
+.nav-icon {
+    min-width: 40px !important;
+    color: var(--text-muted);
+}
+
+.nav-text .MuiTypography-root {
+    font-size: 0.95rem !important;
+    font-weight: 500;
+}
+
+.nav-item.active .nav-text .MuiTypography-root {
+    font-weight: 600;
+}
+
+/* --- Logout Section --- */
+.logout-container {
+    margin-top: auto;
+    padding: 1rem 0.75rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.logout-item {
+    border-radius: 8px !important;
+    color: #ef4444 !important; /* Red color */
+    transition: background 0.2s;
+}
+
+.logout-item:hover {
+    background-color: #fef2f2 !important; /* Light red bg */
+}
+
+/* --- Mobile Toggle --- */
+.mobile-toggle {
+    margin-right: 1rem !important;
+    color: var(--primary-green) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .main-content {
+        padding: 1rem;
+    }
+}

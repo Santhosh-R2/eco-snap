@@ -1,0 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+.main-layout {
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+    background-color: #ffffff;
+}
+
+
+
+.split-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+.left-panel {
+    flex: 1.1;
+    background: linear-gradient(150deg, #0e2a1f 0%, #154034 50%, #103926 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    position: relative;
+}
+
+.left-panel::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(#ffffff 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.05;
+}
+
+.brand-content {
+    max-width: 550px;
+    z-index: 2;
+    color: white;
+}
+
+.tagline-badge {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #a7f3d0;
+}
+
+.brand-title {
+    font-weight: 800 !important;
+    font-size: 3.5rem !important;
+    line-height: 1.1 !important;
+    margin-bottom: 1.5rem !important;
+    letter-spacing: -1.5px !important;
+}
+
+.highlight-text {
+    background: linear-gradient(90deg, #4ade80, #22c55e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.brand-desc {
+    font-weight: 400 !important;
+    font-size: 1.1rem !important;
+    line-height: 1.6 !important;
+    opacity: 0.8;
+    margin-bottom: 3rem !important;
+    max-width: 90%;
+}
+
+.image-card-container {
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+    height: 300px; /* Fixed height for consistency */
+}
+
+.project-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.7s ease;
+}
+
+.image-card-container:hover .project-image {
+    transform: scale(1.05);
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to top, rgba(16, 57, 38, 0.6), transparent);
+}
+
+.right-panel {
+    flex: 0.9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    padding: 2rem;
+}
+
+.login-wrapper {
+    width: 100%;
+    max-width: 420px;
+}
+
+.form-header {
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.icon-circle {
+    width: 50px;
+    height: 50px;
+    background-color: #ecfdf5;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-title {
+    color: #111827;
+    font-weight: 700 !important;
+}
+
+.form-subtitle {
+    color: #6b7280;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.custom-input fieldset {
+    border: 1px solid #e5e7eb !important;
+    transition: all 0.2s ease;
+}
+
+.custom-input:hover fieldset {
+    border-color: #103926 !important;
+}
+
+.Mui-focused fieldset {
+    border-color: #103926 !important;
+    border-width: 2px !important;
+}
+
+.form-footer-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -0.5rem;
+}
+
+.forgot-pass {
+    color: #103926;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.forgot-pass:hover {
+    color: #22c55e;
+}
+
+.submit-btn {
+    margin-top: 1rem !important;
+    padding: 14px !important;
+    border-radius: 12px !important;
+    background-color: #103926 !important;
+    color: white !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    font-size: 1rem !important;
+    box-shadow: 0 4px 6px -1px rgba(16, 57, 38, 0.1), 0 2px 4px -1px rgba(16, 57, 38, 0.06) !important;
+    transition: all 0.3s ease !important;
+}
+
+.submit-btn:hover {
+    background-color: #0d2e1f !important;
+    box-shadow: 0 10px 15px -3px rgba(16, 57, 38, 0.2) !important;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 1024px) {
+    .brand-title { font-size: 2.5rem !important; }
+}
+
+@media (max-width: 900px) {
+    .split-container { flex-direction: column; }
+    .navbar { position: relative; padding: 1rem 1.5rem; background: white; border-bottom: 1px solid #eee; }
+    .nav-brand { background: transparent; box-shadow: none; padding: 0; }
+    
+    .left-panel { flex: none; padding: 3rem 1.5rem; text-align: center; }
+    .left-panel::after { display: none; }
+    .brand-content { align-items: center; display: flex; flex-direction: column; }
+    .image-card-container { display: none;}
+    
+    .right-panel { padding: 3rem 1.5rem; }
+}

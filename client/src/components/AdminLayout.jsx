@@ -40,6 +40,7 @@ const drawerWidth = 260;
 const menuItems = [
     { text: 'Dashboard', icon: <DashboardOutlined />, path: '/admin/dashboard' },
     { text: 'Employees', icon: <PeopleOutline />, path: '/admin/employees' },
+    { text: 'Users', icon: <PeopleOutline />, path: '/admin/users' },
     { text: 'Waste Requests', icon: <DeleteOutline />, path: '/admin/waste-requests' },
     { text: 'Donations', icon: <VolunteerActivismOutlined />, path: '/admin/donations' },
     { text: 'Tasks', icon: <AssignmentOutlined />, path: '/admin/tasks' },
@@ -96,9 +97,9 @@ const AdminLayout = () => {
                                 <ListItemIcon className="nav-icon">
                                     {item.icon}
                                 </ListItemIcon>
-                                <ListItemText 
-                                    primary={item.text} 
-                                    className="nav-text" 
+                                <ListItemText
+                                    primary={item.text}
+                                    className="nav-text"
                                 />
                             </ListItemButton>
                         </ListItem>
@@ -113,9 +114,9 @@ const AdminLayout = () => {
                         <ListItemIcon sx={{ minWidth: '40px', color: '#ef4444' }}>
                             <Logout fontSize="small" />
                         </ListItemIcon>
-                        <ListItemText 
-                            primary="Sign Out" 
-                            primaryTypographyProps={{ fontSize: '0.9rem', fontWeight: 500 }} 
+                        <ListItemText
+                            primary="Sign Out"
+                            primaryTypographyProps={{ fontSize: '0.9rem', fontWeight: 500 }}
                         />
                     </ListItemButton>
                 </ListItem>
@@ -126,7 +127,7 @@ const AdminLayout = () => {
     return (
         <Box className="layout-root">
             <CssBaseline />
-            
+
             {/* Top Header (AppBar) */}
             <AppBar position="fixed" className="admin-appbar" elevation={0}>
                 <Toolbar>
@@ -140,7 +141,7 @@ const AdminLayout = () => {
                     >
                         <MenuIcon />
                     </IconButton>
-                    
+
                     {/* Page Title in Header */}
                     <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }} className="header-title">
                         {menuItems.find(item => item.path === location.pathname)?.text || 'Dashboard'}
@@ -154,7 +155,7 @@ const AdminLayout = () => {
                                 className="profile-btn"
                                 size="small"
                             >
-                                <Avatar 
+                                <Avatar
                                     sx={{ width: 32, height: 32, bgcolor: '#103926', fontSize: '0.9rem' }}
                                 >
                                     A

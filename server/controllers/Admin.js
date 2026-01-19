@@ -152,4 +152,56 @@ const getDashboardStats = async (req, res) => {
     }
 };
 
-module.exports = { adminLogin, addEmployee, updateEmployeeStatus, getDashboardStats };
+const getAllEmployees = async (req, res) => {
+    try {
+        const employees = await User.find({ role: "employee" }).select("-password");
+        res.json(employees);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find({ role: "citizen" }).select("-password");
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Update user active status
+// @route   PUT /api/admin/user/:id/status
+// @access  Private (Admin)
+const updateUserStatus = async (req, res) => {
+    const { isActive } = req.body;
+
+    try {
+        const user = await User.findById(req.params.id);
+
+        if (user && user.role === "citizen") {
+            user.isActive = isActive !== undefined ? isActive : user.isActive;
+            const updatedUser = await user.save();
+            res.json({
+                _id: updatedUser._id,
+                name: updatedUser.name,
+                isActive: updatedUser.isActive,
+                message: `User ${updatedUser.isActive ? "activated" : "deactivated"} successfully`,
+            });
+        } else {
+            res.status(404).json({ message: "User not found" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = {
+    adminLogin,
+    addEmployee,
+    updateEmployeeStatus,
+    getDashboardStats,
+    getAllEmployees,
+    getAllUsers,
+    updateUserStatus
+};

@@ -19,7 +19,7 @@ import axios from '../baseUrl';
 import toast from 'react-hot-toast';
 
 // Import CSS
-import '../styles/complaints.css';
+import '../styles/Complaints.css';
 
 const Complaints = () => {
     const [complaints, setComplaints] = useState([]);

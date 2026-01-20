@@ -1,8 +1,5 @@
 const WasteRequest = require("../models/WasteRequest");
 
-// @desc    Create a new waste pickup request
-// @route   POST /api/waste/request
-// @access  Private (Citizen)
 const createWasteRequest = async (req, res) => {
     const { userId, classification } = req.body;
 
@@ -28,7 +25,6 @@ const createWasteRequest = async (req, res) => {
     }
 };
 
-// @desc    Get all waste requests
 const getWasteRequests = async (req, res) => {
     const { userId } = req.query;
 
@@ -41,7 +37,6 @@ const getWasteRequests = async (req, res) => {
     }
 };
 
-// @desc    Update waste request status
 const updateWasteRequestStatus = async (req, res) => {
     try {
         const request = await WasteRequest.findById(req.params.id);
@@ -61,7 +56,6 @@ const updateWasteRequestStatus = async (req, res) => {
     }
 };
 
-// @desc    Get single waste request by ID
 const getWasteRequestById = async (req, res) => {
     try {
         const request = await WasteRequest.findById(req.params.id).populate("userId");
@@ -76,7 +70,6 @@ const getWasteRequestById = async (req, res) => {
     }
 };
 
-// @desc    Get all paymented waste requests
 const getPaymentedWasteRequests = async (req, res) => {
     try {
         const requests = await WasteRequest.find({ status: "Paymented" }).populate("userId", "name email phone address");

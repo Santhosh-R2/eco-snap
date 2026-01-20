@@ -21,7 +21,7 @@ const paymentSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["pending", "completed", "failed"],
+        enum: ["pending", "completed"],
         default: "pending",
     },
     paymentMethod: {

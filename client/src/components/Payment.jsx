@@ -19,25 +19,20 @@ import {
     AttachMoney,
     DateRange
 } from '@mui/icons-material';
-import axios from '../baseUrl'; // Ensure this points to your configured Axios instance
+import axios from '../baseUrl';
 import toast from 'react-hot-toast';
 
-// Import CSS
 import '../styles/payment.css';
 
 const Payment = () => {
-    // State Management
     const [payments, setPayments] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [activeTab, setActiveTab] = useState('completed'); // 'completed' or 'pending'
+    const [activeTab, setActiveTab] = useState('completed'); 
     const [searchTerm, setSearchTerm] = useState('');
 
-    // Fetch Payments based on active tab
     const fetchPayments = async () => {
         setLoading(true);
         try {
-            // Determines endpoint: /api/payments/completed OR /api/payments/pending
-            // (Assuming your base URL handles /api or it's part of the route)
             const endpoint = `/payments/${activeTab}`; 
             
             const response = await axios.get(endpoint);
@@ -51,12 +46,10 @@ const Payment = () => {
         }
     };
 
-    // Refetch when tab changes
     useEffect(() => {
         fetchPayments();
     }, [activeTab]);
 
-    // Filter Logic
     const filteredPayments = payments.filter(pay => {
         const userName = pay.userId?.name?.toLowerCase() || '';
         const userEmail = pay.userId?.email?.toLowerCase() || '';
@@ -65,7 +58,6 @@ const Payment = () => {
         return userName.includes(search) || userEmail.includes(search);
     });
 
-    // --- Helper Functions ---
     const getStatusIcon = (status) => {
         switch (status) {
             case 'completed': return <CheckCircle fontSize="small" />;
@@ -76,7 +68,6 @@ const Payment = () => {
 
     return (
         <div className="payment-container">
-            {/* Header */}
             <div className="payment-header">
                 <div className="payment-title">
                     <h1>Payment Transactions</h1>
@@ -84,9 +75,7 @@ const Payment = () => {
                 </div>
             </div>
 
-            {/* Controls: Tabs & Search */}
             <div className="payment-controls">
-                {/* Tabs */}
                 <div className="payment-tabs">
                     <button 
                         className={`tab-btn ${activeTab === 'completed' ? 'active' : ''}`}
@@ -102,7 +91,6 @@ const Payment = () => {
                     </button>
                 </div>
 
-                {/* Search */}
                 <div className="payment-search-box">
                     <Search sx={{ color: '#9ca3af' }} />
                     <input 
@@ -115,7 +103,6 @@ const Payment = () => {
                 </div>
             </div>
 
-            {/* Content Table */}
             {loading ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10, flexDirection: 'column', alignItems: 'center' }}>
                     <CircularProgress style={{ color: '#103926' }} />
@@ -137,7 +124,6 @@ const Payment = () => {
                             {filteredPayments.length > 0 ? (
                                 filteredPayments.map((pay) => (
                                     <TableRow key={pay._id} className="payment-row">
-                                        {/* User Column */}
                                         <TableCell className="data-cell">
                                             <div className="user-profile">
                                                 <Avatar 
@@ -154,14 +140,12 @@ const Payment = () => {
                                             </div>
                                         </TableCell>
 
-                                        {/* Amount Column */}
                                         <TableCell className="data-cell">
                                             <div className="amount-text">
                                                 ₹{pay.amount}
                                             </div>
                                         </TableCell>
 
-                                        {/* Date Column */}
                                         <TableCell className="data-cell">
                                             <div className="text-primary">
                                                 {new Date(pay.createdAt).toLocaleDateString()}
@@ -171,7 +155,6 @@ const Payment = () => {
                                             </div>
                                         </TableCell>
 
-                                        {/* Billing Month Column (Assuming 'month' field exists) */}
                                         <TableCell className="data-cell">
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#4b5563' }}>
                                                 <DateRange fontSize="small" sx={{ color: '#9ca3af' }} />
@@ -179,7 +162,6 @@ const Payment = () => {
                                             </div>
                                         </TableCell>
 
-                                        {/* Status Column */}
                                         <TableCell className="data-cell">
                                             <div className={`status-pill status-${pay.status}`}>
                                                 {getStatusIcon(pay.status)}

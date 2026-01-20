@@ -25,12 +25,10 @@ import {
 import axios from '../baseUrl';
 import toast from 'react-hot-toast';
 
-// --- Leaflet Map Imports ---
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
-// Fix for Leaflet default marker icon
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
@@ -42,7 +40,6 @@ let DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-// Import CSS
 import '../styles/wasteRequest.css';
 
 const WasteRequest = () => {
@@ -50,24 +47,19 @@ const WasteRequest = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // --- Bulk Selection State ---
   const [selectedRequestIds, setSelectedRequestIds] = useState([]);
 
-  // Assignment Dialog State
   const [openDialog, setOpenDialog] = useState(false);
-  // 'selectedRequest' is used for Single Assign, 'selectedRequestIds' for Bulk
   const [selectedRequest, setSelectedRequest] = useState(null); 
   
   const [selectedEmployee, setSelectedEmployee] = useState('');
   const [scheduledDate, setScheduledDate] = useState('');
   const [assigning, setAssigning] = useState(false);
 
-  // Map Dialog State
   const [openMapDialog, setOpenMapDialog] = useState(false);
   const [mapCoordinates, setMapCoordinates] = useState([0, 0]);
   const [mapUserAddress, setMapUserAddress] = useState('');
 
-  // Filtered lists
   const [paymentedRequests, setPaymentedRequests] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]);
 
@@ -81,16 +73,13 @@ const WasteRequest = () => {
       const allRequests = reqResponse.data;
       setRequests(allRequests);
 
-      // Filter Requests
       setPaymentedRequests(allRequests.filter(r => r.status === 'Paymented'));
       setPendingRequests(allRequests.filter(r => r.status === 'pending'));
 
-      // Filter Active Employees
       const empData = Array.isArray(empResponse.data) ? empResponse.data : [];
       const activeEmployees = empData.filter(emp => emp.isActive === true);
       setEmployees(activeEmployees);
 
-      // Reset selection on refresh
       setSelectedRequestIds([]);
 
     } catch (error) {
@@ -105,7 +94,6 @@ const WasteRequest = () => {
     fetchData();
   }, []);
 
-  // --- Bulk Selection Handlers ---
   const handleToggleSelect = (id) => {
     setSelectedRequestIds(prev => {
         if (prev.includes(id)) {
@@ -118,17 +106,15 @@ const WasteRequest = () => {
 
   const handleSelectAll = () => {
     if (selectedRequestIds.length === paymentedRequests.length) {
-        setSelectedRequestIds([]); // Deselect all
+        setSelectedRequestIds([]); 
     } else {
-        setSelectedRequestIds(paymentedRequests.map(r => r._id)); // Select all paymented
+        setSelectedRequestIds(paymentedRequests.map(r => r._id)); 
     }
   };
 
-  // --- Map Handler ---
   const handleViewLocation = (request) => {
     const coords = request.userId?.location?.coordinates;
     if (coords && Array.isArray(coords) && coords.length === 2) {
-        // Swap [Lng, Lat] to [Lat, Lng]
         const lat = coords[1];
         const lng = coords[0];
         if(lat !== 0 || lng !== 0) {
@@ -145,19 +131,15 @@ const WasteRequest = () => {
 
   const handleCloseMapDialog = () => setOpenMapDialog(false);
 
-  // --- Assignment Handlers ---
-
-  // 1. Single Assign Click
   const handleAssignClick = (request) => {
-    setSelectedRequest(request); // Set single request
+    setSelectedRequest(request); 
     setOpenDialog(true);
     setSelectedEmployee('');
     setScheduledDate('');
   };
 
-  // 2. Bulk Assign Click
   const handleBulkAssignClick = () => {
-    setSelectedRequest(null); // Ensure single request is null
+    setSelectedRequest(null); 
     setOpenDialog(true);
     setSelectedEmployee('');
     setScheduledDate('');
@@ -176,10 +158,8 @@ const WasteRequest = () => {
 
     setAssigning(true);
     try {
-      // Determine which IDs to send (Single vs Bulk)
       const idsToAssign = selectedRequest ? [selectedRequest._id] : selectedRequestIds;
 
-      // Your backend accepts 'requestIds' as an array
       await axios.post('/tasks/bulk', {
         employeeId: selectedEmployee,
         requestIds: idsToAssign, 
@@ -197,7 +177,6 @@ const WasteRequest = () => {
     }
   };
 
-  // Card Component
   const RequestCard = ({ request, statusType }) => {
     const isSelected = selectedRequestIds.includes(request._id);
     const isPaymented = statusType === 'Paymented';
@@ -211,7 +190,6 @@ const WasteRequest = () => {
             className="waste-request-image"
             />
             
-            {/* Checkbox for Paymented Requests Only */}
             {isPaymented && (
                 <div className="waste-card-checkbox-container" onClick={() => handleToggleSelect(request._id)}>
                     <div className={`waste-custom-checkbox ${isSelected ? 'checked' : ''}`}>
@@ -255,7 +233,6 @@ const WasteRequest = () => {
             )}
 
             <div className="waste-action-area">
-                {/* Always show View Location */}
                 <button 
                     className="waste-location-btn"
                     onClick={() => handleViewLocation(request)}
@@ -264,7 +241,6 @@ const WasteRequest = () => {
                     View Location
                 </button>
 
-                {/* Only show Assign button if status is Paymented */}
                 {isPaymented && (
                     <button
                         className="waste-assign-btn"
@@ -296,7 +272,6 @@ const WasteRequest = () => {
         <p className="waste-page-subtitle">Monitor incoming requests and assign collection tasks.</p>
       </div>
 
-      {/* Section 1: Paymented Requests */}
       <div className="waste-section-container">
         <div className="waste-section-header">
           <div className="waste-section-title">
@@ -305,7 +280,6 @@ const WasteRequest = () => {
             <span className="waste-count-badge">{paymentedRequests.length}</span>
           </div>
           
-          {/* Select All Button */}
           {paymentedRequests.length > 0 && (
               <button className="waste-select-all-btn" onClick={handleSelectAll}>
                   {selectedRequestIds.length === paymentedRequests.length ? 'Deselect All' : 'Select All'}
@@ -326,7 +300,6 @@ const WasteRequest = () => {
         )}
       </div>
 
-      {/* Section 2: Pending Requests */}
       <div className="waste-section-container">
         <div className="waste-section-header">
           <div className="waste-section-title">
@@ -349,7 +322,6 @@ const WasteRequest = () => {
         )}
       </div>
 
-      {/* --- Floating Bulk Action Bar --- */}
       <div className={`waste-bulk-action-bar ${selectedRequestIds.length > 0 ? 'visible' : ''}`}>
           <div className="waste-bulk-count">
               <span>{selectedRequestIds.length}</span> Requests Selected
@@ -359,7 +331,6 @@ const WasteRequest = () => {
           </button>
       </div>
 
-      {/* --- Map Dialog --- */}
       <Dialog
         open={openMapDialog}
         onClose={handleCloseMapDialog}

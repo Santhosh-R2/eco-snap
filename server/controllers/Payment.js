@@ -2,9 +2,6 @@ const Payment = require("../models/Payment");
 const WasteRequest = require("../models/WasteRequest");
 const User = require("../models/User");
 
-// @desc    Process a new monthly payment
-// @route   POST /api/payments
-// @access  Private (Citizen)
 const processPayment = async (req, res) => {
     const { userId, paymentMethod } = req.body;
     const now = new Date();
@@ -16,13 +13,11 @@ const processPayment = async (req, res) => {
             return res.status(400).json({ message: "Invalid payment method. Only UPI and Bank Transfer are allowed." });
         }
 
-        // Check if payment already exists for this month
         const existingPayment = await Payment.findOne({ userId, month, year, status: "completed" });
         if (existingPayment) {
             return res.status(400).json({ message: "Payment already made for this month." });
         }
 
-        // Create payment record
         const payment = await Payment.create({
             userId,
             month,
@@ -33,10 +28,8 @@ const processPayment = async (req, res) => {
             transactionId: `TXN-${Date.now()}`,
         });
 
-        // Update user's paymentStatus to completed
         await User.findByIdAndUpdate(userId, { paymentStatus: "completed" });
 
-        // Update users WasteRequests for the current month to "Paymented"
         const startOfMonth = new Date(year, month - 1, 1);
         const endOfMonth = new Date(year, month, 0, 23, 59, 59, 999);
 
@@ -54,7 +47,6 @@ const processPayment = async (req, res) => {
     }
 };
 
-// @desc    Get user payments
 const getUserPayments = async (req, res) => {
     try {
         const payments = await Payment.find({ userId: req.params.userId });
@@ -64,7 +56,6 @@ const getUserPayments = async (req, res) => {
     }
 };
 
-// @desc    Get all completed payments
 const getAllCompletedPayments = async (req, res) => {
     try {
         const completedPayments = await Payment.find({ status: "completed" }).populate("userId");
@@ -74,7 +65,6 @@ const getAllCompletedPayments = async (req, res) => {
     }
 };
 
-// @desc    Get all pending payments
 const getPendingPayments = async (req, res) => {
     try {
         const pendingPayments = await Payment.find({ status: "pending" }).populate("userId");

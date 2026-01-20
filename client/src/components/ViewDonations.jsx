@@ -25,12 +25,10 @@ import {
 import axios from '../baseUrl';
 import toast from 'react-hot-toast';
 
-// --- Leaflet Map Imports ---
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
-// Fix for Leaflet default marker icon
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
@@ -42,7 +40,6 @@ let DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-// Reuse WasteRequest styles
 import '../styles/wasteRequest.css';
 
 const ViewDonations = () => {
@@ -50,10 +47,8 @@ const ViewDonations = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // --- Bulk Selection State ---
   const [selectedDonationIds, setSelectedDonationIds] = useState([]);
 
-  // Assignment Dialog State
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedDonation, setSelectedDonation] = useState(null);
 
@@ -61,12 +56,10 @@ const ViewDonations = () => {
   const [collectionDate, setCollectionDate] = useState('');
   const [assigning, setAssigning] = useState(false);
 
-  // Map Dialog State
   const [openMapDialog, setOpenMapDialog] = useState(false);
   const [mapCoordinates, setMapCoordinates] = useState([0, 0]);
   const [mapUserAddress, setMapUserAddress] = useState('');
 
-  // Filtered lists
   const [availableDonations, setAvailableDonations] = useState([]);
 
   const fetchData = async () => {
@@ -79,15 +72,12 @@ const ViewDonations = () => {
       const allDonations = donResponse.data;
       setDonations(allDonations);
 
-      // Filter Donations for 'available' status
       setAvailableDonations(allDonations.filter(d => d.status === 'available'));
 
-      // Filter Active Employees
       const empData = Array.isArray(empResponse.data) ? empResponse.data : [];
       const activeEmployees = empData.filter(emp => emp.isActive === true);
       setEmployees(activeEmployees);
 
-      // Reset selection on refresh
       setSelectedDonationIds([]);
 
     } catch (error) {
@@ -102,7 +92,6 @@ const ViewDonations = () => {
     fetchData();
   }, []);
 
-  // --- Bulk Selection Handlers ---
   const handleToggleSelect = (id) => {
     setSelectedDonationIds(prev => {
       if (prev.includes(id)) {
@@ -115,13 +104,12 @@ const ViewDonations = () => {
 
   const handleSelectAll = () => {
     if (selectedDonationIds.length === availableDonations.length) {
-      setSelectedDonationIds([]); // Deselect all
+      setSelectedDonationIds([]); 
     } else {
-      setSelectedDonationIds(availableDonations.map(d => d._id)); // Select all available
+      setSelectedDonationIds(availableDonations.map(d => d._id));
     }
   };
 
-  // --- Map Handler ---
   const handleViewLocation = (donation) => {
     const coords = donation.userId?.location?.coordinates;
     if (coords && Array.isArray(coords) && coords.length === 2) {
@@ -141,7 +129,6 @@ const ViewDonations = () => {
 
   const handleCloseMapDialog = () => setOpenMapDialog(false);
 
-  // --- Assignment Handlers ---
 
   const handleAssignClick = (donation) => {
     setSelectedDonation(donation);
@@ -189,7 +176,6 @@ const ViewDonations = () => {
     }
   };
 
-  // Card Component
   const DonationCard = ({ donation }) => {
     const isSelected = selectedDonationIds.includes(donation._id);
 

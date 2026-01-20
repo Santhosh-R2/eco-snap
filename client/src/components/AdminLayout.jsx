@@ -27,16 +27,14 @@ import {
     PaymentOutlined,
     ReportProblemOutlined,
     Logout,
-    CleaningServices // Matching the Login Logo
+    CleaningServices 
 } from '@mui/icons-material';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 
-// Import the CSS file
 import '../styles/adminLayoutStyles.css';
 
 const drawerWidth = 260;
 
-// Using Outlined icons for a cleaner, modern look
 const menuItems = [
     { text: 'Dashboard', icon: <DashboardOutlined />, path: '/admin/dashboard' },
     { text: 'Employees', icon: <PeopleOutline />, path: '/admin/employees' },
@@ -71,10 +69,8 @@ const AdminLayout = () => {
         navigate('/');
     };
 
-    // The Sidebar Content
     const drawer = (
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-            {/* Logo Section */}
             <div className="sidebar-header">
                 <div className="logo-container">
                     <CleaningServices sx={{ color: '#103926', fontSize: 28 }} />
@@ -84,7 +80,6 @@ const AdminLayout = () => {
                 </div>
             </div>
 
-            {/* Navigation Links */}
             <List className="nav-list">
                 {menuItems.map((item) => {
                     const isActive = location.pathname === item.path;
@@ -107,7 +102,6 @@ const AdminLayout = () => {
                 })}
             </List>
 
-            {/* Logout Section at the bottom */}
             <div className="logout-container">
                 <ListItem disablePadding>
                     <ListItemButton onClick={handleLogout} className="logout-item">
@@ -128,7 +122,6 @@ const AdminLayout = () => {
         <Box className="layout-root">
             <CssBaseline />
 
-            {/* Top Header (AppBar) */}
             <AppBar position="fixed" className="admin-appbar" elevation={0}>
                 <Toolbar>
                     <IconButton
@@ -142,12 +135,10 @@ const AdminLayout = () => {
                         <MenuIcon />
                     </IconButton>
 
-                    {/* Page Title in Header */}
                     <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }} className="header-title">
                         {menuItems.find(item => item.path === location.pathname)?.text || 'Dashboard'}
                     </Typography>
 
-                    {/* Profile Dropdown */}
                     <div>
                         <Tooltip title="Account Settings">
                             <IconButton
@@ -188,12 +179,10 @@ const AdminLayout = () => {
                 </Toolbar>
             </AppBar>
 
-            {/* Sidebar Navigation */}
             <Box
                 component="nav"
                 sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
             >
-                {/* Mobile Drawer */}
                 <Drawer
                     variant="temporary"
                     open={mobileOpen}
@@ -207,7 +196,6 @@ const AdminLayout = () => {
                     {drawer}
                 </Drawer>
 
-                {/* Desktop Drawer */}
                 <Drawer
                     variant="permanent"
                     sx={{

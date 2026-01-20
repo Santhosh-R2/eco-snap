@@ -1,15 +1,11 @@
-/* adminDashboard.css */
-
-/* --- Layout Containers --- */
 .dashboard-container {
     width: 100%;
-    max-width: 1600px; /* Prevent it from stretching too wide on 4k screens */
+    max-width: 1600px; 
     margin: 0 auto;
     font-family: 'Inter', sans-serif;
     color: #1f2937;
 }
 
-/* --- Header Section --- */
 .dashboard-header {
     margin-bottom: 2rem;
     display: flex;

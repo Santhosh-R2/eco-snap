@@ -10,13 +10,16 @@ import ViewDonations from './components/ViewDonations'
 import Tasks from './components/Tasks'
 import Payment from './components/Payment'
 import Complaints from './components/Complaints'
+import NavigationHandler from './NavigationHandler'
+
+
 function App() {
   return (
     <Router>
+      <NavigationHandler />
       <Routes>
         <Route path="/" element={<AdminLogin />} />
 
-        {/* Admin Section with Layout */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="employees" element={<ViewAllEmployees />} />

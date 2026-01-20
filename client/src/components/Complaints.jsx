@@ -18,24 +18,19 @@ import {
 import axios from '../baseUrl';
 import toast from 'react-hot-toast';
 
-// Import CSS
 import '../styles/Complaints.css';
 
 const Complaints = () => {
     const [complaints, setComplaints] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [activeTab, setActiveTab] = useState('user'); // 'user' or 'employee'
-    const [processingId, setProcessingId] = useState(null); // To track which button is loading
-
-    // Fetch Complaints based on active tab
+    const [activeTab, setActiveTab] = useState('user'); 
+    const [processingId, setProcessingId] = useState(null); 
     const fetchComplaints = async () => {
         setLoading(true);
         try {
-            // Endpoint matches the router setup: /api/complaints/user OR /api/complaints/employee
             const endpoint = `/complaints/${activeTab}`;
             const response = await axios.get(endpoint);
 
-            // Filter ONLY pending complaints on the client side
             const pendingComplaints = response.data.filter(c => c.status === 'pending');
             setComplaints(pendingComplaints);
         } catch (error) {
@@ -50,16 +45,13 @@ const Complaints = () => {
         fetchComplaints();
     }, [activeTab]);
 
-    // Handle Status Update
     const handleUpdateStatus = async (id, newStatus) => {
         setProcessingId(id);
         try {
-            // PUT /api/complaints/:id
             await axios.put(`/complaints/${id}`, { status: newStatus });
             
             toast.success(`Complaint marked as ${newStatus}`);
             
-            // Remove the item from the list immediately (Optimistic update)
             setComplaints(prev => prev.filter(c => c._id !== id));
         } catch (error) {
             console.error('Update error:', error);
@@ -69,13 +61,9 @@ const Complaints = () => {
         }
     };
 
-    // Helper to render the Card Content based on who is complaining
     const renderCardContent = (complaint) => {
         const isUserTab = activeTab === 'user';
-        
-        // If User Tab: Complainant = User, Defendant = Employee
-        // If Emp Tab: Complainant = Employee, Defendant = User
-        
+                
         const complainantName = isUserTab ? complaint.userId?.name : complaint.employeeId?.name;
         const complainantImg = isUserTab ? complaint.userId?.profileImage : complaint.employeeId?.profileImage;
         const complainantLabel = isUserTab ? "User" : "Employee";
@@ -86,7 +74,6 @@ const Complaints = () => {
 
         return (
             <div className="complaint-card" key={complaint._id}>
-                {/* Header: Date & Status */}
                 <div className="card-header">
                     <Typography variant="caption" color="textSecondary">
                         ID: {complaint._id.slice(-6).toUpperCase()} • {new Date(complaint.createdAt).toLocaleDateString()}
@@ -96,9 +83,7 @@ const Complaints = () => {
                     </div>
                 </div>
 
-                {/* Profiles: Who vs Who */}
                 <div className="profiles-row">
-                    {/* Complainant */}
                     <div className="profile-box">
                         <Avatar src={complainantImg} sx={{ width: 40, height: 40, bgcolor: '#103926' }}>
                             {complainantName?.charAt(0)}
@@ -111,7 +96,6 @@ const Complaints = () => {
 
                     <div className="vs-badge">VS</div>
 
-                    {/* Defendant */}
                     <div className="profile-box" style={{ flexDirection: 'row-reverse', textAlign: 'right' }}>
                         <Avatar src={defendantImg} sx={{ width: 40, height: 40, bgcolor: '#d32f2f' }}>
                             {defendantName?.charAt(0)}
@@ -123,7 +107,6 @@ const Complaints = () => {
                     </div>
                 </div>
 
-                {/* Issue Description */}
                 <div className="issue-content">
                     <div className="issue-label">
                         <ReportProblem fontSize="small" color="error" />
@@ -139,7 +122,6 @@ const Complaints = () => {
                     )}
                 </div>
 
-                {/* Actions */}
                 <div className="card-actions">
                     <button 
                         className="btn-dismiss"
@@ -170,7 +152,6 @@ const Complaints = () => {
 
     return (
         <div className="complaints-container">
-            {/* Page Header */}
             <div className="complaints-header">
                 <div className="complaints-title">
                     <h1>Grievance Redressal</h1>
@@ -178,7 +159,6 @@ const Complaints = () => {
                 </div>
             </div>
 
-            {/* Tab Controls */}
             <div className="complaints-tabs">
                 <button 
                     className={`comp-tab-btn ${activeTab === 'user' ? 'active' : ''}`}
@@ -196,7 +176,6 @@ const Complaints = () => {
                 </button>
             </div>
 
-            {/* Content Area */}
             {loading ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}>
                     <CircularProgress style={{ color: '#103926' }} />

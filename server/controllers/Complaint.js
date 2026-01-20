@@ -1,8 +1,5 @@
 const Complaint = require("../models/Complaint");
 
-// @desc    File a complaint (User against Employee)
-// @route   POST /api/complaints/user
-// @access  Private (Citizen)
 const fileUserComplaint = async (req, res) => {
     const { userId, employeeId, wasteRequestId, description } = req.body;
 
@@ -21,9 +18,6 @@ const fileUserComplaint = async (req, res) => {
     }
 };
 
-// @desc    File a complaint (Employee against User)
-// @route   POST /api/complaints/employee
-// @access  Private (Employee)
 const fileEmployeeComplaint = async (req, res) => {
     const { userId, employeeId, wasteRequestId, description } = req.body;
 
@@ -42,7 +36,6 @@ const fileEmployeeComplaint = async (req, res) => {
     }
 };
 
-// @desc    Get all complaints (for Admin)
 const getAllComplaints = async (req, res) => {
     try {
         const complaints = await Complaint.find({})
@@ -55,9 +48,6 @@ const getAllComplaints = async (req, res) => {
     }
 };
 
-// @desc    Get user complaints (User against Employee)
-// @route   GET /api/complaints/user
-// @access  Private (Admin)
 const getUserComplaints = async (req, res) => {
     try {
         const complaints = await Complaint.find({ complaintType: "user-against-employee" })
@@ -70,9 +60,6 @@ const getUserComplaints = async (req, res) => {
     }
 };
 
-// @desc    Get employee complaints (Employee against User)
-// @route   GET /api/complaints/employee
-// @access  Private (Admin)
 const getEmployeeComplaints = async (req, res) => {
     try {
         const complaints = await Complaint.find({ complaintType: "employee-against-user" })
@@ -85,7 +72,6 @@ const getEmployeeComplaints = async (req, res) => {
     }
 };
 
-// @desc    Update complaint status
 const updateComplaintStatus = async (req, res) => {
     try {
         const complaint = await Complaint.findById(req.params.id);

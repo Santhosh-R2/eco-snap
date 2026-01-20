@@ -8,7 +8,7 @@ const donationSchema = new mongoose.Schema({
     },
     itemType: {
         type: String,
-        required: true, // e.g., "Clothing", "Books", "Toys"
+        required: true, 
     },
     description: {
         type: String,

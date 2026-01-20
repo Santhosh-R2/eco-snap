@@ -3,9 +3,6 @@ const User = require("../models/User");
 const WasteRequest = require("../models/WasteRequest");
 const Donation = require("../models/Donation");
 
-// @desc    Generate a QR code for a user with profile and history
-// @route   GET /api/users/:id/qrcode
-// @access  Private (User)
 const generateUserQRCode = async (req, res) => {
     try {
         const user = await User.findById(req.params.id).select("-password");
@@ -15,7 +12,6 @@ console.log(user);
             return res.status(404).json({ message: "User not found" });
         }
 
-        // Fetch recent history (limit to last 5 records to keep QR scannable)
         const wasteHistory = await WasteRequest.find({ userId: user._id })
             .select("classification status createdAt")
             .sort({ createdAt: -1 })
@@ -26,11 +22,8 @@ console.log(user);
             .sort({ createdAt: -1 })
             .limit(5);
 
-        // Create QR data with user profile and limited history
-        // Helper to format date
         const formatDate = (date) => new Date(date).toLocaleDateString();
 
-        // Build formatted string
         let qrData = `User Details\n`;
         qrData += `------------------------------\n`;
         qrData += `Name    : ${user.name}\n`;

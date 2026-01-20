@@ -124,7 +124,7 @@ const AdminLogin = () => {
                             </div>
                             <div>
                                 <Typography variant="h5" className="form-title">
-                                    Welcome Back
+                                  Admin Login
                                 </Typography>
                                 <Typography variant="body2" className="form-subtitle">
                                     Enter your details to access your account.
@@ -137,7 +137,7 @@ const AdminLogin = () => {
                                 <label>Email Address</label>
                                 <TextField
                                     fullWidth
-                                    placeholder="admin@ecosnap.com"
+                                    placeholder="Enter your email"
                                     name="email"
                                     type="email"
                                     value={credentials.email}
@@ -176,11 +176,7 @@ const AdminLogin = () => {
                                 />
                             </div>
 
-                            <div className="form-footer-actions">
-                                <Typography variant="body2" className="forgot-pass">
-                                    Forgot Password?
-                                </Typography>
-                            </div>
+                           
 
                             <Button
                                 fullWidth

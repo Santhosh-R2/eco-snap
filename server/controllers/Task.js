@@ -4,9 +4,6 @@ const Payment = require("../models/Payment");
 const User = require("../models/User");
 const { sendCollectionScheduledEmail } = require("../utils/emailService");
 
-// @desc    Assign multiple tasks to an employee
-// @route   POST /api/tasks/bulk
-// @access  Private (Admin)
 const assignBulkTasks = async (req, res) => {
     let { employeeId, requestIds, requestId, scheduledDate } = req.body;
 
@@ -107,7 +104,7 @@ const assignBulkTasks = async (req, res) => {
     }
 };
 
-// @desc    Assign single task
+
 
 
 // @desc    Get employee tasks
@@ -127,7 +124,6 @@ const getEmployeeTasks = async (req, res) => {
     }
 };
 
-// @desc    Get all tasks (for Admin)
 const getAllTasks = async (req, res) => {
     try {
         const tasks = await Task.find({})
@@ -152,7 +148,6 @@ const getAllTasks = async (req, res) => {
     }
 };
 
-// @desc    Update task status
 const updateTaskStatus = async (req, res) => {
     try {
         const task = await Task.findById(req.params.id);
@@ -164,11 +159,8 @@ const updateTaskStatus = async (req, res) => {
             }
             const updatedTask = await task.save();
 
-            // Sync status with WasteRequest if linked
             if (task.requestId) {
                 const wasteStatus = task.status === "completed" ? "completed" : undefined;
-                // If the task is failed, we might want to set it back to pending or keep as scheduled?
-                // For now, let's only sync 'completed'.
                 if (wasteStatus) {
                     await WasteRequest.findByIdAndUpdate(task.requestId, { status: wasteStatus });
                 }

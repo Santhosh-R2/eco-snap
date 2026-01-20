@@ -29,7 +29,6 @@ import {
 import axios from '../baseUrl';
 import toast from 'react-hot-toast';
 
-// Import CSS
 import '../styles/Tasks.css';
 
 const Tasks = () => {
@@ -55,7 +54,6 @@ const Tasks = () => {
         fetchTasks();
     }, []);
 
-    // --- Helper Functions ---
     const getStatusIcon = (status) => {
         switch (status) {
             case 'completed': return <CheckCircle fontSize="small" />;
@@ -70,13 +68,10 @@ const Tasks = () => {
         return status ? `status-${status.replace('-', '')}` : 'status-unknown';
     };
 
-    // --- Filtering Logic ---
     const filteredTasks = tasks.filter(task => {
-        // Determine Task Type & Details
         const isWaste = !!task.requestId;
         const isDonation = !!task.donationId;
         
-        // Get User Object (Handle nested structure safely)
         let user = null;
         if (isWaste && task.requestId?.userId) {
             user = task.requestId.userId;
@@ -105,7 +100,6 @@ const Tasks = () => {
 
     return (
         <div className="tasks-container">
-            {/* Header */}
             <div className="tasks-header">
                 <div className="tasks-title-group">
                     <h1>Task Management</h1>
@@ -113,7 +107,6 @@ const Tasks = () => {
                 </div>
 
                 <div className="tasks-controls">
-                    {/* Status Filter */}
                     <FormControl size="small" sx={{ minWidth: 150 }}>
                         <Select
                             value={filterStatus}
@@ -122,13 +115,10 @@ const Tasks = () => {
                         >
                             <MenuItem value="all">All Statuses</MenuItem>
                             <MenuItem value="assigned">Assigned</MenuItem>
-                            <MenuItem value="in-progress">In Progress</MenuItem>
                             <MenuItem value="completed">Completed</MenuItem>
-                            <MenuItem value="failed">Failed</MenuItem>
                         </Select>
                     </FormControl>
 
-                    {/* Search Bar */}
                     <div className="task-search-box">
                         <Search sx={{ color: '#9ca3af' }} />
                         <input
@@ -142,7 +132,6 @@ const Tasks = () => {
                 </div>
             </div>
 
-            {/* Table */}
             <TableContainer component={Paper} className="tasks-table-card" elevation={0}>
                 <Table sx={{ minWidth: 850 }} aria-label="tasks table">
                     <TableHead className="tasks-table-head">
@@ -157,17 +146,14 @@ const Tasks = () => {
                     <TableBody>
                         {filteredTasks.length > 0 ? (
                             filteredTasks.map((task) => {
-                                // Logic to determine content
                                 const isWaste = !!task.requestId;
                                 const isDonation = !!task.donationId;
                                 
-                                // Safely extract user data based on type
                                 let user = null;
                                 let address = "N/A";
                                 
                                 if (isWaste && task.requestId) {
                                     user = task.requestId.userId;
-                                    // Sometimes address is on userId, sometimes on request depending on schema
                                     address = user?.address || "No address"; 
                                 } else if (isDonation && task.donationId) {
                                     user = task.donationId.userId;
@@ -176,7 +162,6 @@ const Tasks = () => {
 
                                 return (
                                     <TableRow key={task._id} className="task-row">
-                                        {/* Type */}
                                         <TableCell className="task-cell">
                                             {isWaste ? (
                                                 <div className="task-type-badge type-waste">
@@ -196,7 +181,6 @@ const Tasks = () => {
                                             )}
                                         </TableCell>
 
-                                        {/* Employee */}
                                         <TableCell className="task-cell">
                                             <div className="employee-info">
                                                 <Avatar 
@@ -215,11 +199,9 @@ const Tasks = () => {
                                             </div>
                                         </TableCell>
 
-                                        {/* Client Profile (User) */}
                                         <TableCell className="task-cell">
                                             {user ? (
                                                 <div className="employee-info">
-                                                    {/* User Avatar */}
                                                     <Avatar 
                                                         src={user.profileImage}
                                                         className="employee-avatar"
@@ -239,7 +221,6 @@ const Tasks = () => {
 
                                        
 
-                                        {/* Status */}
                                         <TableCell className="task-cell">
                                             <div className={`task-status-pill ${formatStatusClass(task.status)}`}>
                                                 {getStatusIcon(task.status)}
@@ -247,7 +228,6 @@ const Tasks = () => {
                                             </div>
                                         </TableCell>
 
-                                        {/* Date */}
                                         <TableCell className="task-cell">
                                             <div className="text-primary">
                                                 {new Date(task.createdAt).toLocaleDateString()}

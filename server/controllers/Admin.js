@@ -24,9 +24,6 @@ const adminLogin = async (req, res) => {
     }
 };
 
-// @desc    Add a new employee
-// @route   POST /api/admin/employee
-// @access  Private (Admin)
 const addEmployee = async (req, res) => {
     const { name, email, password, phone, address, employeeId, aadhaarNumber } = req.body;
 
@@ -71,9 +68,6 @@ const addEmployee = async (req, res) => {
     }
 };
 
-// @desc    Update employee active status
-// @route   PUT /api/admin/employee/:id/status
-// @access  Private (Admin)
 const updateEmployeeStatus = async (req, res) => {
     const { isActive } = req.body;
 
@@ -97,23 +91,16 @@ const updateEmployeeStatus = async (req, res) => {
     }
 };
 
-// @desc    Get dashboard statistics
-// @route   GET /api/admin/dashboard-stats
-// @access  Private (Admin)
 const getDashboardStats = async (req, res) => {
     try {
         const totalUsers = await User.countDocuments({ role: "citizen" });
         const totalEmployees = await User.countDocuments({ role: "employee" });
         const completedTasks = await Task.countDocuments({ status: "completed" });
-
-        // Donation Stats
         const totalDonations = await Donation.countDocuments();
         const availableDonations = await Donation.countDocuments({ status: "available" });
         const assignedDonations = await Donation.countDocuments({ status: "assigned" });
         const claimedDonations = await Donation.countDocuments({ status: "claimed" });
 
-        // Waste Request Stats (Month-wise)
-        // Aggregating by month for pending, scheduled, and completed statuses
         const wasteRequestStats = await WasteRequest.aggregate([
             {
                 $group: {
@@ -135,7 +122,7 @@ const getDashboardStats = async (req, res) => {
                     }
                 }
             },
-            { $sort: { _id: 1 } } // Sort by month
+            { $sort: { _id: 1 } }
         ]);
 
         res.json({
@@ -176,9 +163,6 @@ const getAllUsers = async (req, res) => {
     }
 };
 
-// @desc    Update user active status
-// @route   PUT /api/admin/user/:id/status
-// @access  Private (Admin)
 const updateUserStatus = async (req, res) => {
     const { isActive } = req.body;
 

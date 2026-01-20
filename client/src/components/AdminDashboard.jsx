@@ -21,10 +21,8 @@ import {
 } from 'chart.js';
 import axios from '../baseUrl';
 
-// Import the CSS file
 import '../styles/adminDashboard.css';
 
-// Register ChartJS components
 ChartJS.register(
     ArcElement,
     Tooltip,
@@ -43,7 +41,6 @@ const AdminDashboard = () => {
         wasteChart: []
     });
 
-    // Function to get current formatted date
     const getCurrentDate = () => {
         return new Date().toLocaleDateString('en-US', {
             weekday: 'long',
@@ -69,9 +66,7 @@ const AdminDashboard = () => {
         fetchStats();
     }, []);
 
-    // --- Chart Data Configuration ---
-
-    // 1. Doughnut Chart Data (Donations)
+    
     const donationData = {
         labels: ['Available', 'Assigned', 'Claimed'],
         datasets: [
@@ -82,9 +77,9 @@ const AdminDashboard = () => {
                     stats.donationChart.claimed
                 ],
                 backgroundColor: [
-                    '#3b82f6', // Blue for Available
-                    '#f59e0b', // Amber for Assigned
-                    '#10b981', // Emerald for Claimed
+                    '#3b82f6', 
+                    '#f59e0b', 
+                    '#10b981', 
                 ],
                 hoverOffset: 4,
                 borderWidth: 0,
@@ -108,25 +103,21 @@ const AdminDashboard = () => {
         }
     };
 
-    // 2. Bar Chart Data (Waste Requests - Month-wise)
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     
-    // Initialize arrays for 12 months
     const completedWaste = new Array(12).fill(0);
     const pendingWaste = new Array(12).fill(0);
     const scheduledWaste = new Array(12).fill(0);
-    const paymentedWaste = new Array(12).fill(0); // Added for Paymented
+    const paymentedWaste = new Array(12).fill(0); 
 
     if (stats.wasteChart && Array.isArray(stats.wasteChart)) {
         stats.wasteChart.forEach(item => {
-            // item._id is the month number (1-12)
             const monthIndex = item._id - 1;
             
             if (monthIndex >= 0 && monthIndex < 12) {
                 completedWaste[monthIndex] = item.completed || 0;
                 pendingWaste[monthIndex] = item.pending || 0;
                 scheduledWaste[monthIndex] = item.scheduled || 0;
-                // Capture the 'Paymented' count (Case sensitive based on your console log)
                 paymentedWaste[monthIndex] = item.Paymented || 0; 
             }
         });
@@ -138,28 +129,28 @@ const AdminDashboard = () => {
             {
                 label: 'Completed',
                 data: completedWaste,
-                backgroundColor: '#103926', // Brand Green
+                backgroundColor: '#103926', 
                 borderRadius: 4,
                 barPercentage: 0.6,
             },
             {
-                label: 'Paymented', // Added Paymented Dataset
+                label: 'Paymented', 
                 data: paymentedWaste,
-                backgroundColor: '#f59e0b', // Amber/Orange to indicate Paid/Verified
+                backgroundColor: '#f59e0b', 
                 borderRadius: 4,
                 barPercentage: 0.6,
             },
             {
                 label: 'Scheduled',
                 data: scheduledWaste,
-                backgroundColor: '#3b82f6', // Blue
+                backgroundColor: '#3b82f6', 
                 borderRadius: 4,
                 barPercentage: 0.6,
             },
             {
                 label: 'Pending',
                 data: pendingWaste,
-                backgroundColor: '#e5e7eb', // Light Gray
+                backgroundColor: '#e5e7eb',
                 borderRadius: 4,
                 barPercentage: 0.6,
             },
@@ -199,7 +190,7 @@ const AdminDashboard = () => {
                     font: { family: "'Inter', sans-serif" },
                     color: '#9ca3af'
                 },
-                stacked: true, // Bars are stacked on top of each other
+                stacked: true, 
             },
             x: {
                 grid: { display: false },
@@ -223,7 +214,6 @@ const AdminDashboard = () => {
 
     return (
         <div className="dashboard-container">
-            {/* Header */}
             <header className="dashboard-header">
                 <div>
                     <h1 className="dashboard-title">Dashboard Overview</h1>
@@ -234,9 +224,7 @@ const AdminDashboard = () => {
                 </div>
             </header>
 
-            {/* KPI Stats Grid */}
             <div className="stats-grid">
-                {/* User Card */}
                 <div className="stat-card users">
                     <div className="stat-content">
                         <h4>Total Users</h4>
@@ -247,7 +235,6 @@ const AdminDashboard = () => {
                     </div>
                 </div>
 
-                {/* Employee Card */}
                 <div className="stat-card employees">
                     <div className="stat-content">
                         <h4>Active Employees</h4>
@@ -270,9 +257,7 @@ const AdminDashboard = () => {
                 </div>
             </div>
 
-            {/* Charts Section */}
             <div className="charts-layout">
-                {/* Donation Doughnut Chart */}
                 <div className="chart-card">
                     <div className="chart-header">
                         <h3>Donation Status</h3>
@@ -285,7 +270,6 @@ const AdminDashboard = () => {
                     </div>
                 </div>
 
-                {/* Waste Request Bar Chart */}
                 <div className="chart-card">
                     <div className="chart-header">
                         <h3>Waste Collection Analytics</h3>

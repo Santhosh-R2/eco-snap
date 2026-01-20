@@ -18,7 +18,6 @@ import { Search } from '@mui/icons-material';
 import axios from '../baseUrl';
 import toast from 'react-hot-toast';
 
-// Import the external CSS
 import '../styles/viewAllEmployees.css';
 
 const ViewAllEmployees = () => {
@@ -29,7 +28,6 @@ const ViewAllEmployees = () => {
   const fetchEmployees = async () => {
     try {
       const response = await axios.get('/admin/employees');
-      // Ensure we are setting an array, even if API returns an object wrapper
       const data = Array.isArray(response.data) ? response.data : (response.data.employees || []);
       setEmployees(data);
     } catch (error) {
@@ -45,7 +43,6 @@ const ViewAllEmployees = () => {
   }, []);
 
   const handleStatusChange = async (id, currentStatus) => {
-    // Optimistic UI Update: Change state immediately for better UX
     const updatedEmployees = employees.map(emp => 
         emp._id === id ? { ...emp, isActive: !currentStatus } : emp
     );
@@ -57,12 +54,10 @@ const ViewAllEmployees = () => {
     } catch (error) {
       console.error('Error updating status:', error);
       toast.error('Failed to update status, reverting changes.');
-      // Revert changes if API fails
       setEmployees(employees); 
     }
   };
 
-  // Helper to get random soft colors for avatars if no image exists
   const stringToColor = (string) => {
     let hash = 0;
     for (let i = 0; i < string.length; i++) {
@@ -72,7 +67,6 @@ const ViewAllEmployees = () => {
     return '#' + '00000'.substring(0, 6 - c.length) + c;
   };
 
-  // Filter logic
   const filteredEmployees = employees.filter(emp =>
     (emp.name && emp.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
     (emp.email && emp.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
@@ -90,14 +84,12 @@ const ViewAllEmployees = () => {
 
   return (
     <div className="page-container">
-      {/* Header Section */}
       <div className="page-header">
         <div>
           <h1 className="header-title">Employee Directory</h1>
           <p className="header-subtitle">Manage access and view employee details.</p>
         </div>
 
-        {/* Custom Search Bar */}
         <div className="search-bar-container">
             <Search className="search-icon" fontSize="small" />
             <input 
@@ -110,7 +102,6 @@ const ViewAllEmployees = () => {
         </div>
       </div>
 
-      {/* Table Section */}
       <TableContainer component={Paper} className="table-card" elevation={0}>
         <Table sx={{ minWidth: 700 }} aria-label="employee table">
           <TableHead className="custom-table-head">
@@ -126,7 +117,6 @@ const ViewAllEmployees = () => {
             {filteredEmployees.length > 0 ? (
               filteredEmployees.map((emp) => (
                 <TableRow key={emp._id} className="body-row">
-                  {/* Profile Column */}
                   <TableCell className="body-cell">
                     <div className="profile-wrapper">
                       <Avatar 
@@ -144,20 +134,17 @@ const ViewAllEmployees = () => {
                     </div>
                   </TableCell>
 
-                  {/* Contact Column */}
                   <TableCell className="body-cell">
                     <div className="contact-text">{emp.email}</div>
                     <div className="contact-sub">{emp.phone || 'No phone provided'}</div>
                   </TableCell>
 
-                  {/* Role Column */}
                   <TableCell className="body-cell">
                     <span className={`role-badge ${emp.role ? emp.role.toLowerCase() : 'default'}`}>
                         {emp.role || 'Employee'}
                     </span>
                   </TableCell>
 
-                  {/* Status Column */}
                   <TableCell className="body-cell">
                     <div className={`status-indicator ${emp.isActive ? 'status-active' : 'status-inactive'}`}>
                         <span className="dot"></span>
@@ -165,7 +152,6 @@ const ViewAllEmployees = () => {
                     </div>
                   </TableCell>
 
-                  {/* Actions Column */}
                   <TableCell className="body-cell" align="center">
                     <Tooltip title={emp.isActive ? "Deactivate Account" : "Activate Account"}>
                         <Switch

@@ -1,8 +1,5 @@
 const Donation = require("../models/Donation");
 
-// @desc    Create a new donation
-// @route   POST /api/donations
-// @access  Private (Citizen)
 const createDonation = async (req, res) => {
     const { userId, itemType, description } = req.body;
 
@@ -25,9 +22,6 @@ const createDonation = async (req, res) => {
     }
 };
 
-// @desc    Get all donations
-// @route   GET /api/donations
-// @access  Public/Private
 const getDonations = async (req, res) => {
     try {
         const donations = await Donation.find({}).populate("userId");
@@ -37,9 +31,6 @@ const getDonations = async (req, res) => {
     }
 };
 
-// @desc    Update donation status
-// @route   PUT /api/donations/:id
-// @access  Private
 const updateDonationStatus = async (req, res) => {
     try {
         const donation = await Donation.findById(req.params.id);
@@ -56,9 +47,6 @@ const updateDonationStatus = async (req, res) => {
     }
 };
 
-// @desc    Mark donation as claimed
-// @route   PUT /api/donations/:id/claim
-// @access  Private
 const claimDonation = async (req, res) => {
     try {
         const donation = await Donation.findById(req.params.id);
@@ -66,8 +54,6 @@ const claimDonation = async (req, res) => {
         if (donation) {
             donation.status = "claimed";
             const updatedDonation = await donation.save();
-
-            // Find associated task and mark as completed
             const Task = require("../models/Task");
             const task = await Task.findOne({ donationId: donation._id });
             if (task) {

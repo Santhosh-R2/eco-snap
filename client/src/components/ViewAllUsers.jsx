@@ -18,7 +18,6 @@ import { Search } from '@mui/icons-material';
 import axios from '../baseUrl';
 import toast from 'react-hot-toast';
 
-// Import CSS
 import '../styles/viewAllUsers.css';
 
 const ViewAllUsers = () => {
@@ -30,7 +29,6 @@ const ViewAllUsers = () => {
         try {
             const response = await axios.get('/admin/users');
             console.log(response);
-            // Safely handle response data
             const data = Array.isArray(response.data) ? response.data : (response.data.users || []);
             setUsers(data);
         } catch (error) {
@@ -45,27 +43,22 @@ const ViewAllUsers = () => {
         fetchUsers();
     }, []);
 
-    // Optimistic UI Update for smoother experience
     const handleStatusChange = async (id, currentStatus) => {
-        // 1. Update UI immediately
         const updatedUsers = users.map(user => 
             user._id === id ? { ...user, isActive: !currentStatus } : user
         );
         setUsers(updatedUsers);
 
         try {
-            // 2. Make API call
             await axios.put(`/admin/user/${id}/status`, { isActive: !currentStatus });
             toast.success(`User ${!currentStatus ? 'activated' : 'deactivated'} successfully`);
         } catch (error) {
-            // 3. Revert if API fails
             console.error('Error updating status:', error);
             toast.error('Failed to update status');
-            setUsers(users); // Revert to previous state
+            setUsers(users); 
         }
     };
 
-    // Helper: Generate consistent colors for avatars based on name
     const stringToColor = (string) => {
         let hash = 0;
         for (let i = 0; i < string.length; i++) {
@@ -91,7 +84,6 @@ const ViewAllUsers = () => {
 
     return (
         <div className="users-container">
-            {/* Header */}
             <div className="users-header">
                 <div className="users-title">
                     <h2>Citizen Management</h2>
@@ -110,7 +102,6 @@ const ViewAllUsers = () => {
                 </div>
             </div>
 
-            {/* Table */}
             <TableContainer component={Paper} className="users-table-card" elevation={0}>
                 <Table sx={{ minWidth: 750 }} aria-label="users table">
                     <TableHead className="users-table-head">
@@ -126,7 +117,6 @@ const ViewAllUsers = () => {
                         {filteredUsers.length > 0 ? (
                             filteredUsers.map((user) => (
                                 <TableRow key={user._id} className="table-row-hover">
-                                    {/* Profile */}
                                     <TableCell className="data-cell">
                                         <div className="user-profile-group">
                                             <Avatar 
@@ -143,12 +133,10 @@ const ViewAllUsers = () => {
                                         </div>
                                     </TableCell>
 
-                                    {/* Contact */}
                                     <TableCell className="data-cell">
                                         <div className="contact-main">{user.email}</div>
                                     </TableCell>
 
-                                    {/* Address */}
                                     <TableCell className="data-cell">
                                         <Tooltip title={user.address || "No Address Provided"}>
                                             <div className="address-text">
@@ -157,7 +145,6 @@ const ViewAllUsers = () => {
                                         </Tooltip>
                                     </TableCell>
 
-                                    {/* Status Pill */}
                                     <TableCell className="data-cell">
                                         <div className={`status-pill ${user.isActive ? 'active' : 'inactive'}`}>
                                             <span className="status-dot"></span>
@@ -165,7 +152,6 @@ const ViewAllUsers = () => {
                                         </div>
                                     </TableCell>
 
-                                    {/* Actions */}
                                     <TableCell className="data-cell" align="center">
                                         <Tooltip title={user.isActive ? "Deactivate User" : "Activate User"}>
                                             <Switch

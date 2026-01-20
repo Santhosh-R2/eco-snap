@@ -5,12 +5,8 @@ const User = require("../models/User");
 const { sendCollectionReminderEmail } = require("../utils/emailService");
 const sendEmail = require("../utils/sendEmail");
 
-// @desc    Send reminder emails for today's scheduled collections and donations
-// @route   GET /api/tasks/send-reminders
-// @access  Private (Admin or Cron Job)
 const sendTodayReminders = async () => {
     try {
-        // Get today's date (start and end of day)
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const tomorrow = new Date(today);
@@ -19,7 +15,6 @@ const sendTodayReminders = async () => {
         console.log(`Running reminders for ${today.toDateString()}`);
         let emailCount = 0;
 
-        // --- 1. Waste Request Reminders ---
         const todayRequests = await WasteRequest.find({
             scheduledDate: { $gte: today, $lt: tomorrow },
             status: "scheduled"
@@ -37,7 +32,6 @@ const sendTodayReminders = async () => {
                 const employee = await User.findById(task.employeeId).select("name employeeId");
 
                 if (user && user.email && employee) {
-                    // Send email using the specific waste collection reminder function
                     try {
                         await sendCollectionReminderEmail(
                             user.email,
@@ -54,7 +48,6 @@ const sendTodayReminders = async () => {
             }
         }
 
-        // --- 2. Donation Pickup Reminders ---
         const todayDonations = await Donation.find({
             collectionDate: { $gte: today, $lt: tomorrow },
             status: { $in: ["assigned", "claimed"] }

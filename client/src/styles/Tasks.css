@@ -1,0 +1,203 @@
+/* tasks.css */
+
+/* --- Layout --- */
+.tasks-container {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    font-family: 'Inter', sans-serif;
+    padding-bottom: 2rem;
+}
+
+/* --- Header Section --- */
+.tasks-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.tasks-title-group h1 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #103926; /* Eco Green */
+    letter-spacing: -0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.tasks-subtitle {
+    color: #6b7280;
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* --- Controls Section (Search & Filter) --- */
+.tasks-controls {
+    display: flex;
+    gap: 1rem;
+}
+
+.task-search-box {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 0.5rem 1rem;
+    width: 280px;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.task-search-box:focus-within {
+    border-color: #103926;
+    box-shadow: 0 0 0 3px rgba(16, 57, 38, 0.1);
+}
+
+.task-search-input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 0.9rem;
+    color: #374151;
+    margin-left: 8px;
+    background: transparent;
+}
+
+/* --- Table Styling --- */
+.tasks-table-card {
+    background: #ffffff;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+    border: 1px solid #f3f4f6;
+    overflow: hidden;
+}
+
+.tasks-table-head {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.task-head-cell {
+    color: #4b5563 !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 1rem 1.5rem !important;
+}
+
+.task-row {
+    transition: background-color 0.15s ease;
+}
+
+.task-row:hover {
+    background-color: #f9fafb;
+}
+
+.task-cell {
+    padding: 1rem 1.5rem !important;
+    border-bottom: 1px solid #f3f4f6 !important;
+    color: #374151 !important;
+    vertical-align: middle !important;
+}
+
+/* --- Column Specific Styles --- */
+.task-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.type-waste {
+    background-color: #ecfdf5;
+    color: #047857;
+    border: 1px solid #a7f3d0;
+}
+
+.type-donation {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #bfdbfe;
+}
+
+.employee-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.employee-avatar {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.text-primary {
+    font-weight: 600;
+    color: #111827;
+    font-size: 0.9rem;
+}
+
+.text-secondary {
+    color: #6b7280;
+    font-size: 0.8rem;
+}
+
+/* --- Status Pills --- */
+.task-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-completed {
+    background-color: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #bbf7d0;
+}
+
+.status-assigned {
+    background-color: #fff7ed;
+    color: #ea580c;
+    border: 1px solid #fed7aa;
+}
+
+.status-inprogress {
+    background-color: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #bfdbfe;
+}
+
+.status-failed {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+/* --- Empty State --- */
+.tasks-empty-state {
+    padding: 4rem;
+    text-align: center;
+    color: #9ca3af;
+}
+
+.tasks-empty-state p {
+    font-size: 1rem;
+    margin-top: 1rem;
+}

@@ -30,7 +30,7 @@ const createDonation = async (req, res) => {
 // @access  Public/Private
 const getDonations = async (req, res) => {
     try {
-        const donations = await Donation.find({}).populate("userId", "name phone profileImage");
+        const donations = await Donation.find({}).populate("userId");
         res.json(donations);
     } catch (error) {
         res.status(500).json({ message: error.message });

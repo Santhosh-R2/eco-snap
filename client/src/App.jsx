@@ -6,6 +6,10 @@ import AdminDashboard from './components/AdminDashboard'
 import ViewAllEmployees from './components/ViewAllEmployees'
 import ViewAllUsers from './components/ViewAllUsers'
 import WasteRequest from './components/WasteRequest'
+import ViewDonations from './components/ViewDonations'
+import Tasks from './components/Tasks'
+import Payment from './components/Payment'
+import Complaints from './components/Complaints'
 function App() {
   return (
     <Router>
@@ -18,10 +22,10 @@ function App() {
           <Route path="employees" element={<ViewAllEmployees />} />
           <Route path="users" element={<ViewAllUsers />} />
           <Route path="waste-requests" element={<WasteRequest />} />
-          <Route path="donations" element={<h2>Donations</h2>} />
-          <Route path="tasks" element={<h2>Tasks</h2>} />
-          <Route path="payments" element={<h2>Payments</h2>} />
-          <Route path="complaints" element={<h2>Complaints</h2>} />
+          <Route path="donations" element={<ViewDonations />} />
+          <Route path="tasks" element={<Tasks />} />
+          <Route path="payments" element={<Payment/>} />
+          <Route path="complaints" element={<Complaints/>} />
         </Route>
       </Routes>
     </Router>

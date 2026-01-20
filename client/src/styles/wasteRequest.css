@@ -254,3 +254,118 @@
     color: #9ca3af;
     font-weight: 500;
 }
+/* wasteRequest.css */
+
+/* ... (Keep all existing styles) ... */
+
+/* --- Checkbox Styling --- */
+.waste-card-checkbox-container {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 10;
+}
+
+.waste-custom-checkbox {
+    width: 24px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid #103926;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(4px);
+}
+
+.waste-custom-checkbox.checked {
+    background-color: #103926;
+    border-color: #103926;
+}
+
+.waste-custom-checkbox svg {
+    color: white;
+    font-size: 18px;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.2s ease;
+}
+
+.waste-custom-checkbox.checked svg {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* --- Bulk Action Bar --- */
+.waste-bulk-action-bar {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(150%); /* Hidden by default */
+    background-color: #103926;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    box-shadow: 0 10px 25px rgba(16, 57, 38, 0.3);
+    z-index: 1000;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.waste-bulk-action-bar.visible {
+    transform: translateX(-50%) translateY(0);
+}
+
+.waste-bulk-count {
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.waste-bulk-count span {
+    background: rgba(255,255,255,0.2);
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.waste-bulk-btn {
+    background-color: white;
+    color: #103926;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.waste-bulk-btn:hover {
+    transform: scale(1.05);
+    background-color: #ecfdf5;
+}
+
+/* --- Select All Button in Header --- */
+.waste-select-all-btn {
+    background: transparent;
+    border: 1px solid #d1fae5;
+    color: #047857;
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: auto; /* Pushes to right */
+    transition: all 0.2s;
+}
+
+.waste-select-all-btn:hover {
+    background-color: #ecfdf5;
+}

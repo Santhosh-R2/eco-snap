@@ -58,7 +58,7 @@ const AdminDashboard = () => {
             try {
                 const response = await axios.get('/admin/dashboard-stats');
                 setStats(response.data);
-                console.log(response);
+                console.log("Dashboard Stats:", response.data);
             } catch (error) {
                 console.error('Error fetching dashboard stats:', error);
             } finally {
@@ -83,7 +83,7 @@ const AdminDashboard = () => {
                 ],
                 backgroundColor: [
                     '#3b82f6', // Blue for Available
-                    '#fbbf24', // Amber for Assigned
+                    '#f59e0b', // Amber for Assigned
                     '#10b981', // Emerald for Claimed
                 ],
                 hoverOffset: 4,
@@ -110,17 +110,24 @@ const AdminDashboard = () => {
 
     // 2. Bar Chart Data (Waste Requests - Month-wise)
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    
+    // Initialize arrays for 12 months
     const completedWaste = new Array(12).fill(0);
     const pendingWaste = new Array(12).fill(0);
     const scheduledWaste = new Array(12).fill(0);
+    const paymentedWaste = new Array(12).fill(0); // Added for Paymented
 
     if (stats.wasteChart && Array.isArray(stats.wasteChart)) {
         stats.wasteChart.forEach(item => {
+            // item._id is the month number (1-12)
             const monthIndex = item._id - 1;
+            
             if (monthIndex >= 0 && monthIndex < 12) {
-                completedWaste[monthIndex] = item.completed;
-                pendingWaste[monthIndex] = item.pending;
-                scheduledWaste[monthIndex] = item.scheduled;
+                completedWaste[monthIndex] = item.completed || 0;
+                pendingWaste[monthIndex] = item.pending || 0;
+                scheduledWaste[monthIndex] = item.scheduled || 0;
+                // Capture the 'Paymented' count (Case sensitive based on your console log)
+                paymentedWaste[monthIndex] = item.Paymented || 0; 
             }
         });
     }
@@ -132,6 +139,13 @@ const AdminDashboard = () => {
                 label: 'Completed',
                 data: completedWaste,
                 backgroundColor: '#103926', // Brand Green
+                borderRadius: 4,
+                barPercentage: 0.6,
+            },
+            {
+                label: 'Paymented', // Added Paymented Dataset
+                data: paymentedWaste,
+                backgroundColor: '#f59e0b', // Amber/Orange to indicate Paid/Verified
                 borderRadius: 4,
                 barPercentage: 0.6,
             },
@@ -165,6 +179,14 @@ const AdminDashboard = () => {
                     font: { family: "'Inter', sans-serif", size: 12 }
                 }
             },
+            tooltip: {
+                backgroundColor: '#1f2937',
+                padding: 12,
+                titleFont: { family: "'Inter', sans-serif", size: 13 },
+                bodyFont: { family: "'Inter', sans-serif", size: 12 },
+                cornerRadius: 8,
+                displayColors: true
+            }
         },
         scales: {
             y: {
@@ -177,7 +199,7 @@ const AdminDashboard = () => {
                     font: { family: "'Inter', sans-serif" },
                     color: '#9ca3af'
                 },
-                stacked: true, // Enable stacking if desired, or false for side-by-side
+                stacked: true, // Bars are stacked on top of each other
             },
             x: {
                 grid: { display: false },
@@ -185,7 +207,7 @@ const AdminDashboard = () => {
                     font: { family: "'Inter', sans-serif" },
                     color: '#9ca3af'
                 },
-                stacked: true, // Enable stacking
+                stacked: true, 
             }
         }
     };
@@ -258,7 +280,6 @@ const AdminDashboard = () => {
                     <div className="chart-container">
                         <Doughnut data={donationData} options={doughnutOptions} />
                     </div>
-                    {/* Optional: Add a summary text below/inside if needed */}
                     <div style={{ textAlign: 'center', marginTop: '1rem', color: '#6b7280', fontSize: '0.9rem' }}>
                         Total Donations: {stats.donationChart.total}
                     </div>

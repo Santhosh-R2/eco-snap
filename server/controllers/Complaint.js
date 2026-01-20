@@ -46,8 +46,8 @@ const fileEmployeeComplaint = async (req, res) => {
 const getAllComplaints = async (req, res) => {
     try {
         const complaints = await Complaint.find({})
-            .populate("userId", "name email")
-            .populate("employeeId", "name employeeId")
+            .populate("userId")
+            .populate("employeeId",)
             .populate("wasteRequestId");
         res.json(complaints);
     } catch (error) {
@@ -61,8 +61,8 @@ const getAllComplaints = async (req, res) => {
 const getUserComplaints = async (req, res) => {
     try {
         const complaints = await Complaint.find({ complaintType: "user-against-employee" })
-            .populate("userId", "name email")
-            .populate("employeeId", "name employeeId")
+            .populate("userId")
+            .populate("employeeId")
             .populate("wasteRequestId");
         res.json(complaints);
     } catch (error) {
@@ -76,8 +76,8 @@ const getUserComplaints = async (req, res) => {
 const getEmployeeComplaints = async (req, res) => {
     try {
         const complaints = await Complaint.find({ complaintType: "employee-against-user" })
-            .populate("userId", "name email")
-            .populate("employeeId", "name employeeId")
+            .populate("userId")
+            .populate("employeeId")
             .populate("wasteRequestId");
         res.json(complaints);
     } catch (error) {

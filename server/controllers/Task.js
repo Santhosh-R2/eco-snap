@@ -131,9 +131,16 @@ const getEmployeeTasks = async (req, res) => {
 const getAllTasks = async (req, res) => {
     try {
         const tasks = await Task.find({})
-            .populate("employeeId", "name email")
+            .populate("employeeId")
             .populate({
                 path: "requestId",
+                populate: {
+                    path: "userId",
+                    select: "-password",
+                },
+            })
+            .populate({
+                path: "donationId",
                 populate: {
                     path: "userId",
                     select: "-password",

@@ -1,0 +1,241 @@
+/* complaints.css */
+
+/* --- Layout --- */
+.complaints-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    font-family: 'Inter', sans-serif;
+    padding-bottom: 3rem;
+}
+
+/* --- Header --- */
+.complaints-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.complaints-title h1 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #103926; /* Eco Green */
+    letter-spacing: -0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.complaints-subtitle {
+    color: #6b7280;
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* --- Tabs --- */
+.complaints-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    background: #f3f4f6;
+    padding: 5px;
+    border-radius: 12px;
+    width: fit-content;
+}
+
+.comp-tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #6b7280;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.comp-tab-btn:hover {
+    color: #103926;
+}
+
+.comp-tab-btn.active {
+    background-color: #ffffff;
+    color: #103926;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* --- Grid Layout --- */
+.complaints-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 1.5rem;
+}
+
+/* --- Card Styles --- */
+.complaint-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid #f3f4f6;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s;
+}
+
+.complaint-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f9fafb;
+}
+
+.status-badge {
+    background-color: #fff7ed;
+    color: #c2410c;
+    border: 1px solid #ffedd5;
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #c2410c;
+    border-radius: 50%;
+}
+
+/* --- Profiles Section --- */
+.profiles-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.profile-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-label {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.profile-name {
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 0.9rem;
+}
+
+.vs-badge {
+    background-color: #f3f4f6;
+    color: #9ca3af;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+/* --- Issue Content --- */
+.issue-content {
+    background-color: #f9fafb;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+}
+
+.issue-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #4b5563;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.issue-text {
+    font-size: 0.9rem;
+    color: #374151;
+    line-height: 1.5;
+}
+
+/* --- Action Buttons --- */
+.card-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: auto;
+}
+
+.btn-resolve {
+    flex: 1;
+    padding: 10px;
+    background-color: #103926;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.btn-resolve:hover {
+    background-color: #0d2e1f;
+}
+
+.btn-dismiss {
+    flex: 1;
+    padding: 10px;
+    background-color: #ffffff;
+    color: #dc2626;
+    border: 1px solid #fee2e2;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-dismiss:hover {
+    background-color: #fef2f2;
+    border-color: #fca5a5;
+}
+
+/* --- Empty State --- */
+.comp-empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem;
+    background-color: #f9fafb;
+    border-radius: 16px;
+    border: 2px dashed #e5e7eb;
+    color: #9ca3af;
+}

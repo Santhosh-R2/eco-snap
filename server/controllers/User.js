@@ -125,4 +125,118 @@ const getCitizens = async (req, res) => {
     }
 };
 
-module.exports = { registerUser, loginUser, getUserDetailsAndHistory, getEmployees, getCitizens };
+// @desc    Get user by ID
+// @route   GET /api/users/:id
+// @access  Private
+const getUserById = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id).select("-password");
+        if (user) {
+            res.json(user);
+        } else {
+            res.status(404).json({ message: "User not found" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Update user profile
+// @route   PUT /api/users/:id
+// @access  Private
+const updateUserProfile = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, email, phone, address, coordinates } = req.body;
+
+        const user = await User.findById(id);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // 1. Handle Profile Image (Same logic as registerUser)
+        // If a file is uploaded, convert to base64. Otherwise, check if a string link was sent, or keep existing.
+        if (req.file) {
+            user.profileImage = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+        } else if (req.body.profileImage) {
+            user.profileImage = req.body.profileImage;
+        }
+
+        // 2. Check if email is already taken by another user
+        if (email && email !== user.email) {
+            const emailExists = await User.findOne({ email, _id: { $ne: id } });
+            if (emailExists) {
+                return res.status(400).json({ message: "Email already in use by another account." });
+            }
+            user.email = email;
+        }
+
+        // 3. Check if phone is already taken by another user
+        if (phone && phone !== user.phone) {
+            const phoneExists = await User.findOne({ phone, _id: { $ne: id } });
+            if (phoneExists) {
+                return res.status(400).json({ message: "Phone number already in use by another account." });
+            }
+            user.phone = phone;
+        }
+
+        // 4. Update basic fields
+        user.name = name || user.name;
+        user.address = address || user.address;
+
+        // 5. Handle Coordinates (Same logic as registerUser)
+        // If coordinates are provided (usually as a string "[lng, lat]" from FormData), parse them.
+        if (coordinates) {
+            try {
+                const parsedCoordinates = typeof coordinates === 'string' ? JSON.parse(coordinates) : coordinates;
+
+                user.location = {
+                    type: "Point",
+                    coordinates: parsedCoordinates
+                };
+            } catch (error) {
+                return res.status(400).json({ message: "Invalid coordinates format" });
+            }
+        }
+
+        const updatedUser = await user.save();
+
+        res.json({
+            _id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            role: updatedUser.role,
+            phone: updatedUser.phone,
+            address: updatedUser.address,
+            profileImage: updatedUser.profileImage,
+            location: updatedUser.location
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Forgot Password - Update password directly if email exists
+// @route   POST /api/users/forgot-password
+// @access  Public
+const forgotPassword = async (req, res) => {
+    const { email, newPassword } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ message: "User with this email does not exist" });
+        }
+
+        user.password = newPassword;
+        await user.save();
+
+        res.json({ message: "Password updated successfully" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { registerUser, loginUser, getUserDetailsAndHistory, getEmployees, getCitizens, getUserById, updateUserProfile, forgotPassword };

@@ -19,11 +19,12 @@ import gsap from 'gsap';
 import axios from '../baseUrl';
 import eco from '../assets/eco.jpg';
 import '../styles/adminLoginStyles.css';
-
+import { useNavigate } from 'react-router-dom';
 const AdminLogin = () => {
     const [credentials, setCredentials] = useState({ email: '', password: '' });
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const navRef = useRef(null);
     const leftPanelRef = useRef(null);
@@ -73,7 +74,7 @@ const AdminLogin = () => {
             const response = await axios.post('/admin/login', credentials);
             if (response.data) {
                 toast.success('Login Successful!');
-                localStorage.setItem('adminToken', response.data.token);
+               navigate('/admin/dashboard');
             }
         } catch (error) {
             const errorMessage = error.response?.data?.message || 'Login failed.';

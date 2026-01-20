@@ -67,7 +67,7 @@ const getUserPayments = async (req, res) => {
 // @desc    Get all completed payments
 const getAllCompletedPayments = async (req, res) => {
     try {
-        const completedPayments = await Payment.find({ status: "completed" }).populate("userId", "name email");
+        const completedPayments = await Payment.find({ status: "completed" }).populate("userId");
         res.json(completedPayments);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -77,7 +77,7 @@ const getAllCompletedPayments = async (req, res) => {
 // @desc    Get all pending payments
 const getPendingPayments = async (req, res) => {
     try {
-        const pendingPayments = await Payment.find({ status: "pending" }).populate("userId", "name email");
+        const pendingPayments = await Payment.find({ status: "pending" }).populate("userId");
         res.json(pendingPayments);
     } catch (error) {
         res.status(500).json({ message: error.message });

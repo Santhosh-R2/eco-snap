@@ -126,6 +126,12 @@ const getDashboardStats = async (req, res) => {
                     },
                     scheduled: {
                         $sum: { $cond: [{ $eq: ["$status", "scheduled"] }, 1, 0] }
+                    },
+                    assigned: {
+                        $sum: { $cond: [{ $eq: ["$status", "assigned"] }, 1, 0] }
+                    },
+                    Paymented: {
+                        $sum: { $cond: [{ $eq: ["$status", "Paymented"] }, 1, 0] }
                     }
                 }
             },

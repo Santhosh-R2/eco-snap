@@ -15,7 +15,13 @@ import {
     Menu,
     MenuItem,
     Avatar,
-    Tooltip
+    Tooltip,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
+    Button
 } from '@mui/material';
 import {
     Menu as MenuIcon,
@@ -27,7 +33,8 @@ import {
     PaymentOutlined,
     ReportProblemOutlined,
     Logout,
-    CleaningServices 
+    CleaningServices,
+    WarningAmberRounded // Icon for the dialog
 } from '@mui/icons-material';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 
@@ -47,10 +54,17 @@ const menuItems = [
 ];
 
 const AdminLayout = () => {
+    // Layout State
     const [mobileOpen, setMobileOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    
+    // Logout Dialog State
+    const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
+
     const navigate = useNavigate();
     const location = useLocation();
+
+    // --- Handlers ---
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -60,15 +74,29 @@ const AdminLayout = () => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => {
+    const handleCloseMenu = () => {
         setAnchorEl(null);
     };
 
-    const handleLogout = () => {
+    // 1. Trigger the Dialog
+    const handleLogoutClick = () => {
+        handleCloseMenu(); // Close profile menu if open
+        setLogoutDialogOpen(true);
+    };
+
+    // 2. Close Dialog
+    const handleLogoutCancel = () => {
+        setLogoutDialogOpen(false);
+    };
+
+    // 3. Perform Actual Logout
+    const handleLogoutConfirm = () => {
+        setLogoutDialogOpen(false);
         localStorage.removeItem('adminToken');
         navigate('/');
     };
 
+    // --- Sidebar Content ---
     const drawer = (
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
             <div className="sidebar-header">
@@ -104,7 +132,7 @@ const AdminLayout = () => {
 
             <div className="logout-container">
                 <ListItem disablePadding>
-                    <ListItemButton onClick={handleLogout} className="logout-item">
+                    <ListItemButton onClick={handleLogoutClick} className="logout-item">
                         <ListItemIcon sx={{ minWidth: '40px', color: '#ef4444' }}>
                             <Logout fontSize="small" />
                         </ListItemIcon>
@@ -122,6 +150,7 @@ const AdminLayout = () => {
         <Box className="layout-root">
             <CssBaseline />
 
+            {/* --- AppBar --- */}
             <AppBar position="fixed" className="admin-appbar" elevation={0}>
                 <Toolbar>
                     <IconButton
@@ -160,7 +189,7 @@ const AdminLayout = () => {
                             keepMounted
                             transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                             open={Boolean(anchorEl)}
-                            onClose={handleClose}
+                            onClose={handleCloseMenu}
                             PaperProps={{
                                 elevation: 0,
                                 sx: {
@@ -172,16 +201,22 @@ const AdminLayout = () => {
                                 },
                             }}
                         >
-                            <MenuItem onClick={handleLogout} dense sx={{ color: 'error.main' }}>Logout</MenuItem>
+                            {/* Menu Logout Button */}
+                            <MenuItem onClick={handleLogoutClick} dense sx={{ color: '#ef4444', fontWeight: 500 }}>
+                                <Logout fontSize="small" sx={{ mr: 1.5 }} />
+                                Sign Out
+                            </MenuItem>
                         </Menu>
                     </div>
                 </Toolbar>
             </AppBar>
 
+            {/* --- Navigation Drawers --- */}
             <Box
                 component="nav"
                 sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
             >
+                {/* Mobile Drawer */}
                 <Drawer
                     variant="temporary"
                     open={mobileOpen}
@@ -195,6 +230,7 @@ const AdminLayout = () => {
                     {drawer}
                 </Drawer>
 
+                {/* Desktop Drawer */}
                 <Drawer
                     variant="permanent"
                     sx={{
@@ -207,9 +243,70 @@ const AdminLayout = () => {
                 </Drawer>
             </Box>
 
+            {/* --- Main Content --- */}
             <Box component="main" className="main-content">
                 <Outlet />
             </Box>
+
+            {/* --- Logout Confirmation Dialog --- */}
+            <Dialog
+                open={logoutDialogOpen}
+                onClose={handleLogoutCancel}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                PaperProps={{
+                    sx: {
+                        borderRadius: '16px',
+                        padding: '8px',
+                        minWidth: '320px'
+                    }
+                }}
+            >
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, p: 2, pb: 1 }}>
+                    <WarningAmberRounded sx={{ color: '#ef4444', fontSize: 28 }} />
+                    <DialogTitle id="alert-dialog-title" sx={{ p: 0, fontWeight: 700, color: '#1f2937' }}>
+                        Confirm Sign Out
+                    </DialogTitle>
+                </Box>
+                
+                <DialogContent sx={{ pb: 1 }}>
+                    <DialogContentText id="alert-dialog-description" sx={{ color: '#4b5563' }}>
+                        Are you sure you want to end your current session? You will be redirected to the login page.
+                    </DialogContentText>
+                </DialogContent>
+                
+                <DialogActions sx={{ p: 2, pt: 2 }}>
+                    <Button 
+                        onClick={handleLogoutCancel} 
+                        sx={{ 
+                            color: '#6b7280',
+                            fontWeight: 600,
+                            textTransform: 'none',
+                            fontSize: '0.95rem'
+                        }}
+                    >
+                        Cancel
+                    </Button>
+                    <Button 
+                        onClick={handleLogoutConfirm} 
+                        variant="contained" 
+                        autoFocus
+                        sx={{ 
+                            bgcolor: '#ef4444',
+                            borderRadius: '8px',
+                            textTransform: 'none',
+                            fontWeight: 600,
+                            boxShadow: 'none',
+                            '&:hover': {
+                                bgcolor: '#dc2626',
+                                boxShadow: '0 4px 6px -1px rgba(220, 38, 38, 0.2)'
+                            }
+                        }}
+                    >
+                        Yes, Sign Out
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };

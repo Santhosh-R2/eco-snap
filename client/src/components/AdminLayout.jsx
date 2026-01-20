@@ -172,7 +172,6 @@ const AdminLayout = () => {
                                 },
                             }}
                         >
-                            <MenuItem onClick={handleClose} dense>Profile</MenuItem>
                             <MenuItem onClick={handleLogout} dense sx={{ color: 'error.main' }}>Logout</MenuItem>
                         </Menu>
                     </div>

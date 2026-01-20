@@ -30,7 +30,7 @@ import axios from '../baseUrl';
 import toast from 'react-hot-toast';
 
 // Import CSS
-import '../styles/Tasks.css';
+import '../styles/tasks.css';
 
 const Tasks = () => {
     const [tasks, setTasks] = useState([]);

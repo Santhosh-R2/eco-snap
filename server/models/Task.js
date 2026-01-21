@@ -19,6 +19,9 @@ const taskSchema = new mongoose.Schema({
         enum: ["assigned", "completed"],
         default: "assigned",
     },
+    scheduledDate: {
+        type: Date,
+    },
     assignedAt: {
         type: Date,
     },

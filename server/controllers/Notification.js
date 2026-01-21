@@ -1,8 +1,13 @@
+const Admin = require("../models/Admin");
 const Task = require("../models/Task");
 const WasteRequest = require("../models/WasteRequest");
 const Donation = require("../models/Donation");
 const User = require("../models/User");
-const { sendCollectionReminderEmail } = require("../utils/emailService");
+const {
+    sendCollectionReminderEmail,
+    sendAdminTaskReminderEmail,
+    sendDonationReminderToUserEmail
+} = require("../utils/emailService");
 const sendEmail = require("../utils/sendEmail");
 
 const sendTodayReminders = async () => {
@@ -15,6 +20,36 @@ const sendTodayReminders = async () => {
         console.log(`Running reminders for ${today.toDateString()}`);
         let emailCount = 0;
 
+        // 1. Notify Admins about today's tasks
+        const todayTasks = await Task.find({
+            scheduledDate: { $gte: today, $lt: tomorrow },
+            status: "assigned"
+        });
+
+        if (todayTasks.length > 0) {
+            const admins = await Admin.find({});
+            const taskDetails = await Promise.all(todayTasks.map(async (task) => {
+                const employee = await User.findById(task.employeeId).select("name");
+                return {
+                    type: task.requestId ? "Waste Pickup" : "Donation Pickup",
+                    employeeName: employee ? employee.name : "Unassigned",
+                    status: task.status
+                };
+            }));
+
+            for (const admin of admins) {
+                if (admin.email) {
+                    try {
+                        await sendAdminTaskReminderEmail(admin.email, taskDetails);
+                        emailCount++;
+                    } catch (err) {
+                        console.error(`Failed to send admin task reminder to ${admin.email}:`, err);
+                    }
+                }
+            }
+        }
+
+        // 2. Notify Users about today's Waste Collections
         const todayRequests = await WasteRequest.find({
             scheduledDate: { $gte: today, $lt: tomorrow },
             status: "scheduled"
@@ -23,8 +58,7 @@ const sendTodayReminders = async () => {
         for (const request of todayRequests) {
             const task = await Task.findOne({
                 requestId: request._id,
-                type: "waste-pickup",
-                status: { $in: ["assigned", "in-progress"] }
+                status: "assigned"
             });
 
             if (task) {
@@ -48,15 +82,19 @@ const sendTodayReminders = async () => {
             }
         }
 
+        // 3. Notify Employees and Citizens about today's Donation Collections
         const todayDonations = await Donation.find({
             collectionDate: { $gte: today, $lt: tomorrow },
-            status: { $in: ["assigned", "claimed"] }
+            status: "assigned"
         });
 
         for (const donation of todayDonations) {
             const task = await Task.findOne({ donationId: donation._id });
             if (task) {
                 const employee = await User.findById(task.employeeId).select("name email");
+                const citizen = await User.findById(donation.userId).select("name email");
+
+                // Notify Employee
                 if (employee && employee.email) {
                     try {
                         await sendEmail({
@@ -67,14 +105,29 @@ const sendTodayReminders = async () => {
                                 <p>Hello ${employee.name},</p>
                                 <p>This is a reminder that you have a donation pickup scheduled for today.</p>
                                 <p><strong>Item:</strong> ${donation.itemType}</p>
-                                <p><strong>Description:</strong> ${donation.description}</p>
+                                <p><strong>Description:</strong> ${donation.description || "N/A"}</p>
                                 <p>Please ensure this is collected by end of day.</p>
                             `
                         });
-                        console.log(`Donation reminder sent to ${employee.email}`);
+                        console.log(`Donation reminder sent to employee ${employee.email}`);
                         emailCount++;
                     } catch (err) {
-                        console.error(`Failed to send donation reminder to ${employee.email}:`, err);
+                        console.error(`Failed to send donation reminder to employee ${employee.email}:`, err);
+                    }
+                }
+
+                // Notify Citizen (Donor)
+                if (citizen && citizen.email) {
+                    try {
+                        await sendDonationReminderToUserEmail(
+                            citizen.email,
+                            citizen.name,
+                            donation.itemType
+                        );
+                        console.log(`Donation reminder sent to citizen ${citizen.email}`);
+                        emailCount++;
+                    } catch (err) {
+                        console.error(`Failed to send donation reminder to citizen ${citizen.email}:`, err);
                     }
                 }
             }

@@ -7,40 +7,27 @@ const { sendCollectionScheduledEmail } = require("../utils/emailService");
 const assignBulkTasks = async (req, res) => {
     let { employeeId, requestIds, requestId, scheduledDate } = req.body;
 
-    // Normalize input to an array
+    // ... [Validation and parsing logic remains the same] ...
     let ids = requestIds || requestId;
-
-    // If it's a string that looks like an array (e.g. from some clients), try parsing it
     if (typeof ids === 'string' && ids.trim().startsWith('[') && ids.trim().endsWith(']')) {
-        try {
-            ids = JSON.parse(ids);
-        } catch (e) {
-            // ignore parse error, treat as string
-        }
+        try { ids = JSON.parse(ids); } catch (e) {}
     }
-
-    // Wrap single value in array if not already an array
-    if (ids && !Array.isArray(ids)) {
-        ids = [ids];
-    }
-
-    // Assign back to requestIds
+    if (ids && !Array.isArray(ids)) { ids = [ids]; }
     requestIds = ids;
 
     try {
         if (!requestIds || !Array.isArray(requestIds) || requestIds.length === 0) {
-            return res.status(400).json({ message: "Please provide an array of requestIds for bulk assignment." });
+            return res.status(400).json({ message: "Please provide an array of requestIds." });
         }
+        
         const tasks = [];
         const now = new Date();
         const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
 
         for (const id of requestIds) {
-            // Processing logic assumed for WasteRequest tasks
             const request = await WasteRequest.findById(id);
             if (!request) continue;
 
-            // Check for monthly payment
             const requestMonth = request.createdAt.getMonth() + 1;
             const requestYear = request.createdAt.getFullYear();
             const monthlyPayment = await Payment.findOne({
@@ -50,40 +37,36 @@ const assignBulkTasks = async (req, res) => {
                 status: "completed"
             });
 
-            if (!monthlyPayment) {
-                continue; // Skip requests from users who haven't paid this month
-            }
+            if (!monthlyPayment) continue;
 
-            // Check for completed collection in the last month for this user
             const existingTasks = await Task.find({
-                // Removed type filter as it's no longer in schema
                 status: "completed",
                 completedAt: { $gte: oneMonthAgo },
             }).populate("requestId");
 
-            // Check if ANY task (which are now presumably waste tasks) for this user exists
             const alreadyCollected = existingTasks.some(t => t.requestId && t.requestId.userId.toString() === request.userId.toString());
 
-            if (alreadyCollected) {
-                continue; // Skip if already collected this month
-            }
+            if (alreadyCollected) continue;
 
+            // --- UPDATED CREATE CALL ---
             const task = await Task.create({
                 employeeId,
                 requestId: id,
-                // type removed
                 status: "assigned",
+                assignedAt: new Date(), // Explicitly set assigned time
+                scheduledDate: scheduledDate ? new Date(scheduledDate) : undefined // Save scheduled date
             });
+            // ---------------------------
+            
             tasks.push(task);
 
-            // Update WasteRequest status to scheduled and set scheduledDate
             const updateData = { status: "scheduled" };
             if (scheduledDate) {
                 updateData.scheduledDate = new Date(scheduledDate);
             }
             await WasteRequest.findByIdAndUpdate(id, updateData);
 
-            // Send email notification if scheduledDate is provided
+            // Send email notification
             if (scheduledDate) {
                 const user = await User.findById(request.userId).select("name email");
                 const employee = await User.findById(employeeId).select("name");

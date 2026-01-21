@@ -116,7 +116,88 @@ const sendCollectionReminderEmail = async (userEmail, userName, employeeName, em
     }
 };
 
+// Send admin task reminder email
+const sendAdminTaskReminderEmail = async (adminEmail, tasks) => {
+    try {
+        const taskRows = tasks.map(task => `
+            <tr>
+                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${task.type}</td>
+                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${task.employeeName}</td>
+                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${task.status}</td>
+            </tr>
+        `).join('');
+
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: adminEmail,
+            subject: 'Daily Task Overview - Ecosnap Admin',
+            html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h2 style="color: #2c3e50;">📋 Daily Task Summary</h2>
+                    <p>Hello Admin,</p>
+                    <p>Here are the tasks scheduled for collection today:</p>
+                    
+                    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                        <thead>
+                            <tr style="background-color: #f8f9fa;">
+                                <th style="padding: 10px; border-bottom: 2px solid #ddd; text-align: left;">Type</th>
+                                <th style="padding: 10px; border-bottom: 2px solid #ddd; text-align: left;">Assigned To</th>
+                                <th style="padding: 10px; border-bottom: 2px solid #ddd; text-align: left;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${taskRows}
+                        </tbody>
+                    </table>
+                    
+                    <p>Please monitor the progress through the dashboard.</p>
+                    <hr style="border: none; border-top: 1px solid #ddd;">
+                    <p style="color: #888; font-size: 12px;">Automated system report.</p>
+                </div>
+            `,
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Admin reminder email sent:', info.messageId);
+        return { success: true };
+    } catch (error) {
+        console.error('Error sending admin email:', error);
+        return { success: false, error: error.message };
+    }
+};
+
+// Send donation reminder email to user
+const sendDonationReminderToUserEmail = async (userEmail, userName, itemType) => {
+    try {
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: userEmail,
+            subject: '🔔 Donation Collection Reminder - Ecosnap',
+            html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h2 style="color: #2ecc71;">🎁 Donation Collection Today!</h2>
+                    <p>Dear <strong>${userName}</strong>,</p>
+                    <p>This is a reminder that your donation of <strong>${itemType}</strong> is scheduled for collection today.</p>
+                    <p>Our team member will be arriving to collect the item. Please ensure someone is available.</p>
+                    <p>Thank you for your generous contribution to a cleaner environment!</p>
+                    <hr style="margin-top: 30px; border: none; border-top: 1px solid #ddd;">
+                    <p style="color: #888; font-size: 12px;">This is an automated reminder.</p>
+                </div>
+            `,
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        console.log('User donation reminder sent:', info.messageId);
+        return { success: true };
+    } catch (error) {
+        console.error('Error sending user donation reminder:', error);
+        return { success: false, error: error.message };
+    }
+};
+
 module.exports = {
     sendCollectionScheduledEmail,
     sendCollectionReminderEmail,
+    sendAdminTaskReminderEmail,
+    sendDonationReminderToUserEmail
 };

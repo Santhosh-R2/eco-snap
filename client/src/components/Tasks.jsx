@@ -24,12 +24,13 @@ import {
     Search,
     DeleteOutline,
     VolunteerActivism,
-    HelpOutline
+    HelpOutline,
+    Event // Added Icon for date
 } from '@mui/icons-material';
 import axios from '../baseUrl';
 import toast from 'react-hot-toast';
 
-import '../styles/Tasks.css';
+import '../styles/tasks.css';
 
 const Tasks = () => {
     const [tasks, setTasks] = useState([]);
@@ -133,14 +134,15 @@ const Tasks = () => {
             </div>
 
             <TableContainer component={Paper} className="tasks-table-card" elevation={0}>
-                <Table sx={{ minWidth: 850 }} aria-label="tasks table">
+                <Table sx={{ minWidth: 900 }} aria-label="tasks table">
                     <TableHead className="tasks-table-head">
                         <TableRow>
                             <TableCell className="task-head-cell">Task Type</TableCell>
                             <TableCell className="task-head-cell">Assigned Employee</TableCell>
                             <TableCell className="task-head-cell">Client Profile</TableCell>
+                            <TableCell className="task-head-cell">Scheduled For</TableCell> {/* New Column */}
                             <TableCell className="task-head-cell">Status</TableCell>
-                            <TableCell className="task-head-cell">Date Assigned</TableCell>
+                            <TableCell className="task-head-cell">Assigned At</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -150,14 +152,16 @@ const Tasks = () => {
                                 const isDonation = !!task.donationId;
                                 
                                 let user = null;
-                                let address = "N/A";
+                                let targetDate = null; // Variable for the date
                                 
                                 if (isWaste && task.requestId) {
                                     user = task.requestId.userId;
-                                    address = user?.address || "No address"; 
+                                    // Use scheduledDate for Waste
+                                    targetDate = task.requestId.scheduledDate || task.scheduledDate; 
                                 } else if (isDonation && task.donationId) {
                                     user = task.donationId.userId;
-                                    address = user?.address || "No address";
+                                    // Use collectionDate for Donation
+                                    targetDate = task.donationId.collectionDate;
                                 }
 
                                 return (
@@ -219,7 +223,25 @@ const Tasks = () => {
                                             )}
                                         </TableCell>
 
-                                       
+                                        {/* Scheduled Date Column */}
+                                        <TableCell className="task-cell">
+                                            {targetDate ? (
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                    <Event fontSize="small" sx={{ color: '#6b7280' }} />
+                                                    <div>
+                                                        <div className="text-primary">
+                                                            {new Date(targetDate).toLocaleDateString()}
+                                                        </div>
+                                                        {/* Optional: Show "Today" or day name */}
+                                                        <div className="text-secondary">
+                                                            {new Date(targetDate).toLocaleDateString(undefined, { weekday: 'short' })}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <span className="text-secondary">Not Scheduled</span>
+                                            )}
+                                        </TableCell>
 
                                         <TableCell className="task-cell">
                                             <div className={`task-status-pill ${formatStatusClass(task.status)}`}>

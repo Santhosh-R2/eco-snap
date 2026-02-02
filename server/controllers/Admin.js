@@ -25,32 +25,52 @@ const adminLogin = async (req, res) => {
 };
 
 const addEmployee = async (req, res) => {
-    const { name, email, password, phone, address, employeeId, aadhaarNumber } = req.body;
+    // 1. Extract all fields (Added wardNumber)
+    const { 
+        name, 
+        email, 
+        password, 
+        phone, 
+        address, 
+        employeeId, 
+        aadhaarNumber, 
+        wardNumber 
+    } = req.body;
 
-    let profileImage = req.body.profileImage || "";
+    // 2. Handle Image Processing
+    let profileImage = "";
     if (req.file) {
         profileImage = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
     }
 
     try {
+        // 3. Validation: Check if Email already exists
         const userExists = await User.findOne({ email });
-
         if (userExists) {
-            return res.status(400).json({ message: "Employee with this email already exists" });
+            return res.status(400).json({ message: "User with this email already exists" });
         }
 
+        // 4. Validation: Check if Employee ID already exists
+        const empIdExists = await User.findOne({ employeeId });
+        if (empIdExists) {
+            return res.status(400).json({ message: "Employee ID is already assigned to another user" });
+        }
+
+        // 5. Create the Employee
         const employee = await User.create({
             name,
             email,
-            password,
-            role: "employee",
+            password, // Mongoose "pre-save" middleware will hash this
+            role: "employee", // Enforce role
             phone,
             address,
             profileImage,
             employeeId,
             aadhaarNumber,
+            wardNumber
         });
 
+        // 6. Send Response
         if (employee) {
             res.status(201).json({
                 _id: employee._id,
@@ -59,11 +79,21 @@ const addEmployee = async (req, res) => {
                 role: employee.role,
                 profileImage: employee.profileImage,
                 employeeId: employee.employeeId,
+                wardNumber: employee.wardNumber,
+                message: "Employee registered successfully"
             });
         } else {
             res.status(400).json({ message: "Invalid employee data" });
         }
+
     } catch (error) {
+        // 7. Robust Error Handling for Duplicates (e.g., if Schema makes Phone/Aadhaar unique)
+        if (error.code === 11000) {
+            const field = Object.keys(error.keyValue)[0];
+            return res.status(400).json({ message: `${field} already exists.` });
+        }
+        
+        console.error("Add Employee Error:", error);
         res.status(500).json({ message: error.message });
     }
 };

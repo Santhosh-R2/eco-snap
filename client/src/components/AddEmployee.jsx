@@ -11,7 +11,7 @@ const AddEmployee = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     
-    // Form State
+    // Form State (Removed aadhaarNumber)
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -23,31 +23,100 @@ const AddEmployee = () => {
         employeeId: '',
     });
 
+    // Error State
+    const [errors, setErrors] = useState({});
+
     // Image State
     const [imageFile, setImageFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
 
+    // --- Validation Logic ---
+    const validateField = (name, value) => {
+        let error = "";
+
+        switch (name) {
+            case "name":
+                if (!/^[A-Za-z\s]+$/.test(value)) error = "Name must contain only alphabets.";
+                break;
+            case "email":
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) error = "Invalid email format.";
+                break;
+            case "phone":
+                if (!/^\d{10}$/.test(value)) error = "Phone number must be exactly 10 digits.";
+                break;
+            case "wardNumber":
+                if (!/^\d+$/.test(value)) error = "Ward number must be numeric.";
+                break;
+            case "employeeId":
+                if (!/^[A-Za-z0-9-]+$/.test(value)) error = "Invalid format (Alphanumeric & hyphens only).";
+                break;
+            case "password":
+                if (value.length < 6) error = "Password must be at least 6 characters.";
+                break;
+            default:
+                break;
+        }
+        return error;
+    };
+
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+
+        // Input restrictions
+        if ((name === 'phone' || name === 'wardNumber') && !/^\d*$/.test(value)) return;
+        if (name === 'name' && !/^[A-Za-z\s]*$/.test(value)) return;
+
+        setFormData({ ...formData, [name]: value });
+
+        const errorMsg = validateField(name, value);
+        setErrors({ ...errors, [name]: errorMsg });
     };
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
+            if (!file.type.startsWith("image/")) {
+                toast.error("Please upload a valid image file.");
+                return;
+            }
             setImageFile(file);
             setImagePreview(URL.createObjectURL(file));
         }
     };
 
+    const validateForm = () => {
+        const newErrors = {};
+        Object.keys(formData).forEach(key => {
+            if (key !== 'role' && key !== 'profileImage' && key !== 'address') {
+                const error = validateField(key, formData[key]);
+                if (error) newErrors[key] = error;
+            }
+        });
+        
+        // Check empty fields (Removed aadhaarNumber)
+        ['name', 'email', 'password', 'phone', 'employeeId', 'wardNumber'].forEach(field => {
+            if (!formData[field]) newErrors[field] = `${field} is required`;
+        });
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!validateForm()) {
+            toast.error("Please fix the errors in the form.");
+            return;
+        }
+
         setLoading(true);
 
         const data = new FormData();
         data.append('name', formData.name);
         data.append('email', formData.email);
         data.append('password', formData.password);
-        data.append('role', 'employee'); // Force role
+        data.append('role', 'employee'); 
         data.append('phone', formData.phone);
         data.append('address', formData.address);
         data.append('wardNumber', formData.wardNumber);
@@ -58,12 +127,13 @@ const AddEmployee = () => {
         }
 
         try {
-            await axios.post('/users/register', data, {
+            // Ensure this endpoint matches your backend controller route
+            await axios.post('/admin/employee', data, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 
             toast.success('Employee created successfully!');
-            navigate('/admin/employees'); // Redirect back to list
+            navigate('/admin/employees'); 
         } catch (error) {
             console.error('Registration error:', error);
             const msg = error.response?.data?.message || 'Failed to create employee';
@@ -87,7 +157,7 @@ const AddEmployee = () => {
                     <div className="add-employee-image-section">
                         <div className="add-employee-avatar-wrapper">
                             <img 
-                                src={imagePreview || "https://via.placeholder.com/150?text=Upload"} 
+                                src={imagePreview || "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"} 
                                 alt="Profile Preview" 
                                 className="add-employee-avatar"
                             />
@@ -95,95 +165,94 @@ const AddEmployee = () => {
                         <label className="add-employee-upload-btn">
                             <CloudUpload fontSize="small" />
                             Upload Photo
-                            <input 
-                                type="file" 
-                                accept="image/*" 
-                                hidden 
-                                onChange={handleImageChange}
-                            />
+                            <input type="file" accept="image/*" hidden onChange={handleImageChange} />
                         </label>
                     </div>
 
                     <div className="add-employee-form-grid">
                         {/* Name */}
                         <div className="add-employee-form-group">
-                            <label className="add-employee-label">Full Name</label>
+                            <label className="add-employee-label">Full Name <span style={{color:'red'}}>*</span></label>
                             <input 
                                 type="text" 
                                 name="name" 
-                                className="add-employee-input"
-                                placeholder="Enter full name"
+                                className={`add-employee-input ${errors.name ? 'input-error-add-emp' : ''}`} 
+                                placeholder="Enter full name" 
                                 value={formData.name} 
                                 onChange={handleChange} 
-                                required 
                             />
+                            {errors.name && <span className="error-text-add-emp">{errors.name}</span>}
                         </div>
 
                         {/* Email */}
                         <div className="add-employee-form-group">
-                            <label className="add-employee-label">Email Address</label>
+                            <label className="add-employee-label">Email Address <span style={{color:'red'}}>*</span></label>
                             <input 
                                 type="email" 
                                 name="email" 
-                                className="add-employee-input"
-                                placeholder="employee@ecosnap.com"
+                                className={`add-employee-input ${errors.email ? 'input-error-add-emp' : ''}`} 
+                                placeholder="employee@ecosnap.com" 
                                 value={formData.email} 
                                 onChange={handleChange} 
-                                required 
                             />
+                            {errors.email && <span className="error-text-add-emp">{errors.email}</span>}
                         </div>
 
                         {/* Password */}
                         <div className="add-employee-form-group">
-                            <label className="add-employee-label">Password</label>
+                            <label className="add-employee-label">Password <span style={{color:'red'}}>*</span></label>
                             <input 
                                 type="password" 
                                 name="password" 
-                                className="add-employee-input"
-                                placeholder="Create a secure password"
+                                className={`add-employee-input ${errors.password ? 'input-error-add-emp' : ''}`} 
+                                placeholder="Create password" 
                                 value={formData.password} 
                                 onChange={handleChange} 
-                                required 
                             />
+                            {errors.password && <span className="error-text-add-emp">{errors.password}</span>}
                         </div>
 
                         {/* Phone */}
                         <div className="add-employee-form-group">
-                            <label className="add-employee-label">Phone Number</label>
+                            <label className="add-employee-label">Phone Number <span style={{color:'red'}}>*</span></label>
                             <input 
                                 type="tel" 
                                 name="phone" 
-                                className="add-employee-input"
-                                placeholder="+91 98765 43210"
+                                maxLength="10" 
+                                className={`add-employee-input ${errors.phone ? 'input-error-add-emp' : ''}`} 
+                                placeholder="9876543210" 
                                 value={formData.phone} 
                                 onChange={handleChange} 
                             />
+                            {errors.phone && <span className="error-text-add-emp">{errors.phone}</span>}
                         </div>
 
                         {/* Employee ID */}
                         <div className="add-employee-form-group">
-                            <label className="add-employee-label">Employee ID</label>
+                            <label className="add-employee-label">Employee ID <span style={{color:'red'}}>*</span></label>
                             <input 
                                 type="text" 
                                 name="employeeId" 
-                                className="add-employee-input"
-                                placeholder="EMP-001"
+                                className={`add-employee-input ${errors.employeeId ? 'input-error-add-emp' : ''}`} 
+                                placeholder="TXT-68-78-85" 
                                 value={formData.employeeId} 
                                 onChange={handleChange} 
                             />
+                            {errors.employeeId && <span className="error-text-add-emp">{errors.employeeId}</span>}
                         </div>
 
-                         {/* Ward Number */}
-                         <div className="add-employee-form-group">
-                            <label className="add-employee-label">Assigned Ward</label>
+                        {/* Ward Number */}
+                        <div className="add-employee-form-group">
+                            <label className="add-employee-label">Assigned Ward <span style={{color:'red'}}>*</span></label>
                             <input 
-                                type="number" 
+                                type="text" 
                                 name="wardNumber" 
-                                className="add-employee-input"
-                                placeholder="e.g. 12"
+                                className={`add-employee-input ${errors.wardNumber ? 'input-error-add-emp' : ''}`} 
+                                placeholder="e.g. 12" 
                                 value={formData.wardNumber} 
                                 onChange={handleChange} 
                             />
+                            {errors.wardNumber && <span className="error-text-add-emp">{errors.wardNumber}</span>}
                         </div>
 
                         {/* Address */}
@@ -191,9 +260,9 @@ const AddEmployee = () => {
                             <label className="add-employee-label">Address</label>
                             <textarea 
                                 name="address" 
-                                className="add-employee-input"
-                                placeholder="Residential Address"
-                                rows="3"
+                                className="add-employee-input" 
+                                placeholder="Residential Address" 
+                                rows="3" 
                                 value={formData.address} 
                                 onChange={handleChange} 
                                 style={{ resize: 'none' }}
@@ -204,20 +273,19 @@ const AddEmployee = () => {
                     <div className="add-employee-actions">
                         <button 
                             type="button" 
-                            className="add-employee-btn-cancel"
+                            className="add-employee-btn-cancel" 
                             onClick={() => navigate('/admin/employees')}
                         >
                             Cancel
                         </button>
                         <button 
                             type="submit" 
-                            className="add-employee-btn-submit"
+                            className="add-employee-btn-submit" 
                             disabled={loading}
                         >
                             {loading ? <CircularProgress size={20} color="inherit" /> : 'Create Employee'}
                         </button>
                     </div>
-
                 </form>
             </div>
         </div>

@@ -11,7 +11,7 @@ import Tasks from './components/Tasks'
 import Payment from './components/Payment'
 import Complaints from './components/Complaints'
 import NavigationHandler from './NavigationHandler'
-
+import AddEmployee from './components/AddEmployee'; 
 
 function App() {
   return (
@@ -29,6 +29,7 @@ function App() {
           <Route path="tasks" element={<Tasks />} />
           <Route path="payments" element={<Payment/>} />
           <Route path="complaints" element={<Complaints/>} />
+          <Route path="add-employee" element={<AddEmployee />} />
         </Route>
       </Routes>
     </Router>

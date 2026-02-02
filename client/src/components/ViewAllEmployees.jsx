@@ -12,9 +12,11 @@ import {
   Avatar,
   Switch,
   CircularProgress,
-  Tooltip
+  Tooltip,
+  Button // Import Button
 } from '@mui/material';
-import { Search } from '@mui/icons-material';
+import { Search, Add } from '@mui/icons-material'; // Import Add Icon
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import axios from '../baseUrl';
 import toast from 'react-hot-toast';
 
@@ -24,6 +26,7 @@ const ViewAllEmployees = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate(); // Hook for navigation
 
   const fetchEmployees = async () => {
     try {
@@ -90,15 +93,34 @@ const ViewAllEmployees = () => {
           <p className="header-subtitle">Manage access and view employee details.</p>
         </div>
 
-        <div className="search-bar-container">
-            <Search className="search-icon" fontSize="small" />
-            <input 
-                type="text" 
-                placeholder="Search by name, email or ID..." 
-                className="search-input"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
+        {/* --- Action Buttons --- */}
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+            <div className="search-bar-container">
+                <Search className="search-icon" fontSize="small" />
+                <input 
+                    type="text" 
+                    placeholder="Search employees..." 
+                    className="search-input"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </div>
+
+            <Button
+                variant="contained"
+                startIcon={<Add />}
+                onClick={() => navigate('/admin/add-employee')} // Navigate to Add Page
+                sx={{
+                    bgcolor: '#103926',
+                    textTransform: 'none',
+                    borderRadius: '10px',
+                    fontWeight: 'bold',
+                    padding: '8px 16px',
+                    '&:hover': { bgcolor: '#0d2e1f' }
+                }}
+            >
+                Add Employee
+            </Button>
         </div>
       </div>
 

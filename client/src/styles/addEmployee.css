@@ -1,0 +1,190 @@
+/* addEmployee.css */
+
+.add-employee-container {
+    width: 100%;
+    max-width: 800px; /* Centered narrow form */
+    margin: 2rem auto;
+    font-family: 'Inter', sans-serif;
+    padding: 0 1rem;
+}
+
+/* --- Header --- */
+.add-employee-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.add-employee-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #103926;
+    margin-bottom: 0.5rem;
+}
+
+.add-employee-subtitle {
+    color: #6b7280;
+    font-size: 1rem;
+}
+
+/* --- Form Card --- */
+.add-employee-card {
+    background: #ffffff;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f3f4f6;
+}
+
+/* --- Image Upload Section --- */
+.add-employee-image-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.add-employee-avatar-wrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 1rem;
+}
+
+.add-employee-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #ecfdf5;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.add-employee-upload-btn {
+    background-color: #f3f4f6;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.add-employee-upload-btn:hover {
+    background-color: #e5e7eb;
+}
+
+/* --- Form Grid --- */
+.add-employee-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.add-employee-full-width {
+    grid-column: 1 / -1;
+}
+
+/* --- Input Fields --- */
+.add-employee-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.add-employee-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.add-employee-input {
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #1f2937;
+    transition: border-color 0.2s;
+    outline: none;
+    font-family: inherit;
+}
+
+.add-employee-input:focus {
+    border-color: #103926;
+    box-shadow: 0 0 0 3px rgba(16, 57, 38, 0.1);
+}
+
+/* --- Select Dropdown --- */
+.add-employee-select {
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #1f2937;
+    background-color: white;
+    cursor: pointer;
+    outline: none;
+}
+
+.add-employee-select:focus {
+    border-color: #103926;
+}
+
+/* --- Actions --- */
+.add-employee-actions {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.add-employee-btn-cancel {
+    padding: 0.75rem 1.5rem;
+    background-color: transparent;
+    color: #6b7280;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.add-employee-btn-cancel:hover {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.add-employee-btn-submit {
+    padding: 0.75rem 2rem;
+    background-color: #103926;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.add-employee-btn-submit:hover {
+    background-color: #0d2e1f;
+    box-shadow: 0 4px 6px -1px rgba(16, 57, 38, 0.2);
+}
+
+.add-employee-btn-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+    .add-employee-form-grid {
+        grid-template-columns: 1fr;
+    }
+}

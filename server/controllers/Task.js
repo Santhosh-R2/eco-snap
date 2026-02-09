@@ -101,6 +101,13 @@ const getEmployeeTasks = async (req, res) => {
                     select: "-password",
                 },
             })
+        .populate({
+                path: "donationId",
+                populate: {
+                    path: "userId",
+                    select: "-password",
+                },
+            })
         res.json(tasks);
     } catch (error) {
         res.status(500).json({ message: error.message });

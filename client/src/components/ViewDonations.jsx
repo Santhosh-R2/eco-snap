@@ -302,7 +302,7 @@ const ViewDonations = () => {
           <span>{selectedDonationIds.length}</span> Donations Selected
         </div>
         <button className="waste-bulk-btn" onClick={handleBulkAssignClick}>
-          Assign to Driver
+          Assign to Employee
         </button>
       </div>
 

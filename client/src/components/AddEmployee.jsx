@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
-import { CloudUpload } from '@mui/icons-material';
+import { CloudUpload, Visibility, VisibilityOff } from '@mui/icons-material';
 import axios from '../baseUrl';
 import toast from 'react-hot-toast';
 
@@ -11,7 +11,10 @@ const AddEmployee = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     
-    // Form State (Removed aadhaarNumber)
+    // State for Password Visibility
+    const [showPassword, setShowPassword] = useState(false);
+
+    // Form State
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -30,10 +33,9 @@ const AddEmployee = () => {
     const [imageFile, setImageFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
 
-    // --- Validation Logic ---
+    // Validation Logic
     const validateField = (name, value) => {
         let error = "";
-
         switch (name) {
             case "name":
                 if (!/^[A-Za-z\s]+$/.test(value)) error = "Name must contain only alphabets.";
@@ -84,6 +86,10 @@ const AddEmployee = () => {
         }
     };
 
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
     const validateForm = () => {
         const newErrors = {};
         Object.keys(formData).forEach(key => {
@@ -93,7 +99,6 @@ const AddEmployee = () => {
             }
         });
         
-        // Check empty fields (Removed aadhaarNumber)
         ['name', 'email', 'password', 'phone', 'employeeId', 'wardNumber'].forEach(field => {
             if (!formData[field]) newErrors[field] = `${field} is required`;
         });
@@ -104,38 +109,23 @@ const AddEmployee = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (!validateForm()) {
             toast.error("Please fix the errors in the form.");
             return;
         }
 
         setLoading(true);
-
         const data = new FormData();
-        data.append('name', formData.name);
-        data.append('email', formData.email);
-        data.append('password', formData.password);
-        data.append('role', 'employee'); 
-        data.append('phone', formData.phone);
-        data.append('address', formData.address);
-        data.append('wardNumber', formData.wardNumber);
-        data.append('employeeId', formData.employeeId);
-        
-        if (imageFile) {
-            data.append('profileImage', imageFile);
-        }
+        Object.keys(formData).forEach(key => data.append(key, formData[key]));
+        if (imageFile) data.append('profileImage', imageFile);
 
         try {
-            // Ensure this endpoint matches your backend controller route
             await axios.post('/admin/employee', data, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
-
             toast.success('Employee created successfully!');
             navigate('/admin/employees'); 
         } catch (error) {
-            console.error('Registration error:', error);
             const msg = error.response?.data?.message || 'Failed to create employee';
             toast.error(msg);
         } finally {
@@ -170,7 +160,6 @@ const AddEmployee = () => {
                     </div>
 
                     <div className="add-employee-form-grid">
-                        {/* Name */}
                         <div className="add-employee-form-group">
                             <label className="add-employee-label">Full Name <span style={{color:'red'}}>*</span></label>
                             <input 
@@ -184,7 +173,6 @@ const AddEmployee = () => {
                             {errors.name && <span className="error-text-add-emp">{errors.name}</span>}
                         </div>
 
-                        {/* Email */}
                         <div className="add-employee-form-group">
                             <label className="add-employee-label">Email Address <span style={{color:'red'}}>*</span></label>
                             <input 
@@ -198,21 +186,25 @@ const AddEmployee = () => {
                             {errors.email && <span className="error-text-add-emp">{errors.email}</span>}
                         </div>
 
-                        {/* Password */}
+                        {/* Password Field with Eye Icon */}
                         <div className="add-employee-form-group">
                             <label className="add-employee-label">Password <span style={{color:'red'}}>*</span></label>
-                            <input 
-                                type="password" 
-                                name="password" 
-                                className={`add-employee-input ${errors.password ? 'input-error-add-emp' : ''}`} 
-                                placeholder="Create password" 
-                                value={formData.password} 
-                                onChange={handleChange} 
-                            />
+                            <div className="password-input-wrapper">
+                                <input 
+                                    type={showPassword ? "text" : "password"} 
+                                    name="password" 
+                                    className={`add-employee-input ${errors.password ? 'input-error-add-emp' : ''}`} 
+                                    placeholder="Create password" 
+                                    value={formData.password} 
+                                    onChange={handleChange}
+                                />
+                                <span className="password-toggle-icon" onClick={togglePasswordVisibility}>
+                                    {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
+                                </span>
+                            </div>
                             {errors.password && <span className="error-text-add-emp">{errors.password}</span>}
                         </div>
 
-                        {/* Phone */}
                         <div className="add-employee-form-group">
                             <label className="add-employee-label">Phone Number <span style={{color:'red'}}>*</span></label>
                             <input 
@@ -227,21 +219,19 @@ const AddEmployee = () => {
                             {errors.phone && <span className="error-text-add-emp">{errors.phone}</span>}
                         </div>
 
-                        {/* Employee ID */}
                         <div className="add-employee-form-group">
                             <label className="add-employee-label">Employee ID <span style={{color:'red'}}>*</span></label>
                             <input 
                                 type="text" 
                                 name="employeeId" 
                                 className={`add-employee-input ${errors.employeeId ? 'input-error-add-emp' : ''}`} 
-                                placeholder="TXT-68-78-85" 
+                                placeholder="EMP-12345" 
                                 value={formData.employeeId} 
                                 onChange={handleChange} 
                             />
                             {errors.employeeId && <span className="error-text-add-emp">{errors.employeeId}</span>}
                         </div>
 
-                        {/* Ward Number */}
                         <div className="add-employee-form-group">
                             <label className="add-employee-label">Assigned Ward <span style={{color:'red'}}>*</span></label>
                             <input 
@@ -255,7 +245,6 @@ const AddEmployee = () => {
                             {errors.wardNumber && <span className="error-text-add-emp">{errors.wardNumber}</span>}
                         </div>
 
-                        {/* Address */}
                         <div className="add-employee-form-group add-employee-full-width">
                             <label className="add-employee-label">Address</label>
                             <textarea 
@@ -271,18 +260,10 @@ const AddEmployee = () => {
                     </div>
 
                     <div className="add-employee-actions">
-                        <button 
-                            type="button" 
-                            className="add-employee-btn-cancel" 
-                            onClick={() => navigate('/admin/employees')}
-                        >
+                        <button type="button" className="add-employee-btn-cancel" onClick={() => navigate('/admin/employees')}>
                             Cancel
                         </button>
-                        <button 
-                            type="submit" 
-                            className="add-employee-btn-submit" 
-                            disabled={loading}
-                        >
+                        <button type="submit" className="add-employee-btn-submit" disabled={loading}>
                             {loading ? <CircularProgress size={20} color="inherit" /> : 'Create Employee'}
                         </button>
                     </div>

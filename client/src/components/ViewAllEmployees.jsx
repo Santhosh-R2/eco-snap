@@ -13,10 +13,10 @@ import {
   Switch,
   CircularProgress,
   Tooltip,
-  Button // Import Button
+  Button 
 } from '@mui/material';
-import { Search, Add } from '@mui/icons-material'; // Import Add Icon
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { Search, Add } from '@mui/icons-material'; 
+import { useNavigate } from 'react-router-dom'; 
 import axios from '../baseUrl';
 import toast from 'react-hot-toast';
 
@@ -26,7 +26,7 @@ const ViewAllEmployees = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate(); 
 
   const fetchEmployees = async () => {
     try {
@@ -93,7 +93,6 @@ const ViewAllEmployees = () => {
           <p className="header-subtitle">Manage access and view employee details.</p>
         </div>
 
-        {/* --- Action Buttons --- */}
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
             <div className="search-bar-container">
                 <Search className="search-icon" fontSize="small" />
@@ -109,7 +108,7 @@ const ViewAllEmployees = () => {
             <Button
                 variant="contained"
                 startIcon={<Add />}
-                onClick={() => navigate('/admin/add-employee')} // Navigate to Add Page
+                onClick={() => navigate('/admin/add-employee')} 
                 sx={{
                     bgcolor: '#103926',
                     textTransform: 'none',

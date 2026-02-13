@@ -25,7 +25,6 @@ const adminLogin = async (req, res) => {
 };
 
 const addEmployee = async (req, res) => {
-    // 1. Extract all fields (Added wardNumber)
     const { 
         name, 
         email, 
@@ -37,31 +36,26 @@ const addEmployee = async (req, res) => {
         wardNumber 
     } = req.body;
 
-    // 2. Handle Image Processing
     let profileImage = "";
     if (req.file) {
         profileImage = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
     }
 
     try {
-        // 3. Validation: Check if Email already exists
         const userExists = await User.findOne({ email });
         if (userExists) {
             return res.status(400).json({ message: "User with this email already exists" });
         }
-
-        // 4. Validation: Check if Employee ID already exists
         const empIdExists = await User.findOne({ employeeId });
         if (empIdExists) {
             return res.status(400).json({ message: "Employee ID is already assigned to another user" });
         }
 
-        // 5. Create the Employee
         const employee = await User.create({
             name,
             email,
-            password, // Mongoose "pre-save" middleware will hash this
-            role: "employee", // Enforce role
+            password, 
+            role: "employee", 
             phone,
             address,
             profileImage,
@@ -70,7 +64,6 @@ const addEmployee = async (req, res) => {
             wardNumber
         });
 
-        // 6. Send Response
         if (employee) {
             res.status(201).json({
                 _id: employee._id,
@@ -87,7 +80,6 @@ const addEmployee = async (req, res) => {
         }
 
     } catch (error) {
-        // 7. Robust Error Handling for Duplicates (e.g., if Schema makes Phone/Aadhaar unique)
         if (error.code === 11000) {
             const field = Object.keys(error.keyValue)[0];
             return res.status(400).json({ message: `${field} already exists.` });

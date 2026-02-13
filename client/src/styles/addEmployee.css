@@ -31,7 +31,6 @@
     border: 1px solid #f3f4f6;
 }
 
-/* Image Section */
 .add-employee-image-section {
     display: flex;
     flex-direction: column;
@@ -64,7 +63,6 @@
     gap: 0.5rem;
 }
 
-/* Form Grid */
 .add-employee-form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -101,7 +99,6 @@
     box-shadow: 0 0 0 3px rgba(16, 57, 38, 0.1);
 }
 
-/* --- Password Icon Logic --- */
 .password-input-wrapper {
     position: relative;
     display: flex;
@@ -111,7 +108,7 @@
 
 .password-input-wrapper .add-employee-input {
     width: 100%;
-    padding-right: 45px; /* Important: prevents text from going under the icon */
+    padding-right: 45px; 
 }
 
 .password-toggle-icon {
@@ -128,7 +125,6 @@
     color: #103926;
 }
 
-/* Error States */
 .input-error-add-emp {
     border-color: #dc2626 !important;
     background-color: #fef2f2;
@@ -140,7 +136,6 @@
     font-weight: 500;
 }
 
-/* Actions */
 .add-employee-actions {
     margin-top: 2rem;
     display: flex;

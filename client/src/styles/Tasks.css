@@ -1,6 +1,4 @@
-/* tasks.css */
 
-/* --- Layout --- */
 .tasks-container {
     width: 100%;
     max-width: 1500px;
@@ -9,7 +7,6 @@
     padding-bottom: 2rem;
 }
 
-/* --- Header Section --- */
 .tasks-header {
     display: flex;
     justify-content: space-between;
@@ -22,7 +19,7 @@
 .tasks-title-group h1 {
     font-size: 1.8rem;
     font-weight: 800;
-    color: #103926; /* Eco Green */
+    color: #103926; 
     letter-spacing: -0.5px;
     margin-bottom: 0.5rem;
 }
@@ -33,7 +30,6 @@
     margin: 0;
 }
 
-/* --- Controls Section (Search & Filter) --- */
 .tasks-controls {
     display: flex;
     gap: 1rem;
@@ -66,7 +62,6 @@
     background: transparent;
 }
 
-/* --- Table Styling --- */
 .tasks-table-card {
     background: #ffffff;
     border-radius: 16px !important;
@@ -104,7 +99,6 @@
     vertical-align: middle !important;
 }
 
-/* --- Column Specific Styles --- */
 .task-type-badge {
     display: inline-flex;
     align-items: center;
@@ -154,7 +148,6 @@
     font-size: 0.8rem;
 }
 
-/* --- Status Pills --- */
 .task-status-pill {
     display: inline-flex;
     align-items: center;
@@ -190,7 +183,6 @@
     border: 1px solid #fecaca;
 }
 
-/* --- Empty State --- */
 .tasks-empty-state {
     padding: 4rem;
     text-align: center;

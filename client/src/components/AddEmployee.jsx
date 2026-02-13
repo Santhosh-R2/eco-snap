@@ -11,10 +11,8 @@ const AddEmployee = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     
-    // State for Password Visibility
     const [showPassword, setShowPassword] = useState(false);
 
-    // Form State
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -26,14 +24,11 @@ const AddEmployee = () => {
         employeeId: '',
     });
 
-    // Error State
     const [errors, setErrors] = useState({});
 
-    // Image State
     const [imageFile, setImageFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
 
-    // Validation Logic
     const validateField = (name, value) => {
         let error = "";
         switch (name) {
@@ -64,7 +59,6 @@ const AddEmployee = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        // Input restrictions
         if ((name === 'phone' || name === 'wardNumber') && !/^\d*$/.test(value)) return;
         if (name === 'name' && !/^[A-Za-z\s]*$/.test(value)) return;
 
@@ -143,7 +137,6 @@ const AddEmployee = () => {
             <div className="add-employee-card">
                 <form onSubmit={handleSubmit}>
                     
-                    {/* Image Upload */}
                     <div className="add-employee-image-section">
                         <div className="add-employee-avatar-wrapper">
                             <img 
@@ -186,7 +179,6 @@ const AddEmployee = () => {
                             {errors.email && <span className="error-text-add-emp">{errors.email}</span>}
                         </div>
 
-                        {/* Password Field with Eye Icon */}
                         <div className="add-employee-form-group">
                             <label className="add-employee-label">Password <span style={{color:'red'}}>*</span></label>
                             <div className="password-input-wrapper">

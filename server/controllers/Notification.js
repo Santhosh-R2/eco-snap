@@ -20,7 +20,6 @@ const sendTodayReminders = async () => {
         console.log(`Running reminders for ${today.toDateString()}`);
         let emailCount = 0;
 
-        // 1. Notify Admins about today's tasks
         const todayTasks = await Task.find({
             scheduledDate: { $gte: today, $lt: tomorrow },
             status: "assigned"
@@ -49,7 +48,6 @@ const sendTodayReminders = async () => {
             }
         }
 
-        // 2. Notify Users about today's Waste Collections
         const todayRequests = await WasteRequest.find({
             scheduledDate: { $gte: today, $lt: tomorrow },
             status: "scheduled"
@@ -82,7 +80,6 @@ const sendTodayReminders = async () => {
             }
         }
 
-        // 3. Notify Employees and Citizens about today's Donation Collections
         const todayDonations = await Donation.find({
             collectionDate: { $gte: today, $lt: tomorrow },
             status: "assigned"
@@ -116,7 +113,6 @@ const sendTodayReminders = async () => {
                     }
                 }
 
-                // Notify Citizen (Donor)
                 if (citizen && citizen.email) {
                     try {
                         await sendDonationReminderToUserEmail(

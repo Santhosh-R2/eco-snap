@@ -25,7 +25,7 @@ import {
     DeleteOutline,
     VolunteerActivism,
     HelpOutline,
-    Event // Added Icon for date
+    Event 
 } from '@mui/icons-material';
 import axios from '../baseUrl';
 import toast from 'react-hot-toast';
@@ -140,7 +140,7 @@ const Tasks = () => {
                             <TableCell className="task-head-cell">Task Type</TableCell>
                             <TableCell className="task-head-cell">Assigned Employee</TableCell>
                             <TableCell className="task-head-cell">Client Profile</TableCell>
-                            <TableCell className="task-head-cell">Scheduled For</TableCell> {/* New Column */}
+                            <TableCell className="task-head-cell">Scheduled For</TableCell> 
                             <TableCell className="task-head-cell">Status</TableCell>
                             <TableCell className="task-head-cell">Assigned At</TableCell>
                         </TableRow>
@@ -152,15 +152,13 @@ const Tasks = () => {
                                 const isDonation = !!task.donationId;
                                 
                                 let user = null;
-                                let targetDate = null; // Variable for the date
+                                let targetDate = null;
                                 
                                 if (isWaste && task.requestId) {
                                     user = task.requestId.userId;
-                                    // Use scheduledDate for Waste
                                     targetDate = task.requestId.scheduledDate || task.scheduledDate; 
                                 } else if (isDonation && task.donationId) {
                                     user = task.donationId.userId;
-                                    // Use collectionDate for Donation
                                     targetDate = task.donationId.collectionDate;
                                 }
 
@@ -223,7 +221,6 @@ const Tasks = () => {
                                             )}
                                         </TableCell>
 
-                                        {/* Scheduled Date Column */}
                                         <TableCell className="task-cell">
                                             {targetDate ? (
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -232,7 +229,6 @@ const Tasks = () => {
                                                         <div className="text-primary">
                                                             {new Date(targetDate).toLocaleDateString()}
                                                         </div>
-                                                        {/* Optional: Show "Today" or day name */}
                                                         <div className="text-secondary">
                                                             {new Date(targetDate).toLocaleDateString(undefined, { weekday: 'short' })}
                                                         </div>

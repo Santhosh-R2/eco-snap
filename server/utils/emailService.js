@@ -1,15 +1,13 @@
 const nodemailer = require('nodemailer');
 
-// Create reusable transporter
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // You can use other services like 'outlook', 'yahoo', etc.
+    service: 'gmail',
     auth: {
-        user: process.env.EMAIL_USER, // Your email address
-        pass: process.env.EMAIL_PASS, // Your email password or app password
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
     },
 });
 
-// Send collection scheduled email to user
 const sendCollectionScheduledEmail = async (userEmail, userName, scheduledDate, employeeName) => {
     try {
         const formattedDate = new Date(scheduledDate).toLocaleDateString('en-IN', {
@@ -62,7 +60,6 @@ const sendCollectionScheduledEmail = async (userEmail, userName, scheduledDate, 
     }
 };
 
-// Send collection reminder email (for same-day collections)
 const sendCollectionReminderEmail = async (userEmail, userName, employeeName, employeeId) => {
     try {
         const today = new Date().toLocaleDateString('en-IN', {
@@ -116,7 +113,6 @@ const sendCollectionReminderEmail = async (userEmail, userName, employeeName, em
     }
 };
 
-// Send admin task reminder email
 const sendAdminTaskReminderEmail = async (adminEmail, tasks) => {
     try {
         const taskRows = tasks.map(task => `
@@ -166,7 +162,6 @@ const sendAdminTaskReminderEmail = async (adminEmail, tasks) => {
     }
 };
 
-// Send donation reminder email to user
 const sendDonationReminderToUserEmail = async (userEmail, userName, itemType) => {
     try {
         const mailOptions = {

@@ -1,6 +1,4 @@
-/* complaints.css */
 
-/* --- Layout --- */
 .complaints-container {
     width: 100%;
     max-width: 1400px;
@@ -9,7 +7,6 @@
     padding-bottom: 3rem;
 }
 
-/* --- Header --- */
 .complaints-header {
     display: flex;
     justify-content: space-between;
@@ -22,7 +19,7 @@
 .complaints-title h1 {
     font-size: 1.8rem;
     font-weight: 800;
-    color: #103926; /* Eco Green */
+    color: #103926; 
     letter-spacing: -0.5px;
     margin-bottom: 0.5rem;
 }
@@ -33,7 +30,6 @@
     margin: 0;
 }
 
-/* --- Tabs --- */
 .complaints-tabs {
     display: flex;
     gap: 1rem;
@@ -69,14 +65,12 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
-/* --- Grid Layout --- */
 .complaints-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
     gap: 1.5rem;
 }
 
-/* --- Card Styles --- */
 .complaint-card {
     background: #ffffff;
     border-radius: 16px;
@@ -123,7 +117,6 @@
     border-radius: 50%;
 }
 
-/* --- Profiles Section --- */
 .profiles-row {
     display: flex;
     justify-content: space-between;
@@ -160,7 +153,6 @@
     border-radius: 6px;
 }
 
-/* --- Issue Content --- */
 .issue-content {
     background-color: #f9fafb;
     padding: 1rem;
@@ -185,7 +177,6 @@
     line-height: 1.5;
 }
 
-/* --- Action Buttons --- */
 .card-actions {
     display: flex;
     gap: 1rem;
@@ -229,7 +220,6 @@
     border-color: #fca5a5;
 }
 
-/* --- Empty State --- */
 .comp-empty-state {
     grid-column: 1 / -1;
     text-align: center;

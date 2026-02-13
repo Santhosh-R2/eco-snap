@@ -1,4 +1,4 @@
-/* adminLayoutStyles.css */
+
 
 :root {
     --primary-green: #103926;
@@ -8,12 +8,11 @@
     --sidebar-bg: #ffffff;
     --text-dark: #1f2937;
     --text-muted: #6b7280;
-    --active-bg: #ecfdf5; /* Very light green */
+    --active-bg: #ecfdf5; 
     --hover-bg: #f9fafb;
     --border-color: #e5e7eb;
 }
 
-/* --- Main Layout Containers --- */
 .layout-root {
     display: flex;
     min-height: 100vh;
@@ -24,18 +23,17 @@
 .main-content {
     flex-grow: 1;
     padding: 2rem;
-    margin-top: 64px; /* Height of AppBar */
+    margin-top: 64px; 
     overflow-x: hidden;
     min-height: 100vh;
     background-color: var(--bg-light);
 }
 
-/* --- AppBar (Header) --- */
 .admin-appbar {
     background-color: #ffffff !important;
     color: var(--text-dark) !important;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
-    z-index: 1201 !important; /* Above Drawer */
+    z-index: 1201 !important; 
 }
 
 .header-title {
@@ -57,11 +55,10 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-/* --- Sidebar (Drawer) --- */
 .sidebar-paper {
     background-color: var(--sidebar-bg) !important;
     border-right: 1px solid var(--border-color) !important;
-    width: 260px !important; /* Slightly wider for better breathing room */
+    width: 260px !important; 
 }
 
 .sidebar-header {
@@ -85,7 +82,6 @@
     letter-spacing: -0.5px;
 }
 
-/* --- Navigation Items --- */
 .nav-list {
     padding: 1rem 0.75rem !important;
     display: flex;
@@ -106,7 +102,6 @@
     transform: translateX(3px);
 }
 
-/* Active State styling */
 .nav-item.active {
     background-color: var(--active-bg) !important;
     color: var(--primary-green) !important;
@@ -117,7 +112,6 @@
     color: var(--primary-green) !important;
 }
 
-/* Icon styling */
 .nav-icon {
     min-width: 40px !important;
     color: var(--text-muted);
@@ -132,7 +126,6 @@
     font-weight: 600;
 }
 
-/* --- Logout Section --- */
 .logout-container {
     margin-top: auto;
     padding: 1rem 0.75rem;
@@ -141,21 +134,19 @@
 
 .logout-item {
     border-radius: 8px !important;
-    color: #ef4444 !important; /* Red color */
+    color: #ef4444 !important;  
     transition: background 0.2s;
 }
 
 .logout-item:hover {
-    background-color: #fef2f2 !important; /* Light red bg */
+    background-color: #fef2f2 !important; 
 }
 
-/* --- Mobile Toggle --- */
 .mobile-toggle {
     margin-right: 1rem !important;
     color: var(--primary-green) !important;
 }
 
-/* Responsive adjustments */
 @media (max-width: 600px) {
     .main-content {
         padding: 1rem;

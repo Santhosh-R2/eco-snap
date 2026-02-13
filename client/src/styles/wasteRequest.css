@@ -1,6 +1,4 @@
-/* wasteRequest.css */
 
-/* --- Layout --- */
 .waste-requests-container {
     width: 100%;
     max-width: 1400px;
@@ -9,7 +7,6 @@
     padding-bottom: 3rem;
 }
 
-/* --- Header --- */
 .waste-page-header {
     margin-bottom: 2.5rem;
     border-bottom: 1px solid #e5e7eb;
@@ -19,7 +16,7 @@
 .waste-page-title {
     font-size: 1.8rem;
     font-weight: 800;
-    color: #103926; /* Eco Green */
+    color: #103926; 
     letter-spacing: -0.5px;
     margin-bottom: 0.5rem;
 }
@@ -29,7 +26,6 @@
     font-size: 1rem;
 }
 
-/* --- Section Styling --- */
 .waste-section-container {
     margin-bottom: 3rem;
 }
@@ -59,14 +55,12 @@
     font-weight: 600;
 }
 
-/* --- Grid Layout --- */
 .waste-requests-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); /* Slightly wider for buttons */
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); 
     gap: 2rem;
 }
 
-/* --- Card Styling --- */
 .waste-request-card {
     background: #ffffff;
     border-radius: 16px;
@@ -130,7 +124,6 @@
     background-color: currentColor;
 }
 
-/* --- Card Content --- */
 .waste-card-content {
     padding: 1.5rem;
     display: flex;
@@ -174,7 +167,6 @@
     margin-top: 2px;
 }
 
-/* --- Action Area --- */
 .waste-action-area {
     margin-top: auto;
     padding-top: 1.2rem;
@@ -225,7 +217,6 @@
     background-color: #0d2e1f;
 }
 
-/* --- Dialogs --- */
 .waste-dialog-content-wrapper {
     min-height: 200px;
 }
@@ -238,13 +229,11 @@
     border: 2px solid #e5e7eb;
 }
 
-/* Leaflet container override */
 .leaflet-container {
     width: 100%;
     height: 100%;
 }
 
-/* --- Empty State --- */
 .waste-empty-state {
     padding: 3rem;
     text-align: center;
@@ -254,11 +243,7 @@
     color: #9ca3af;
     font-weight: 500;
 }
-/* wasteRequest.css */
 
-/* ... (Keep all existing styles) ... */
-
-/* --- Checkbox Styling --- */
 .waste-card-checkbox-container {
     position: absolute;
     top: 12px;
@@ -298,12 +283,11 @@
     transform: scale(1);
 }
 
-/* --- Bulk Action Bar --- */
 .waste-bulk-action-bar {
     position: fixed;
     bottom: 2rem;
     left: 50%;
-    transform: translateX(-50%) translateY(150%); /* Hidden by default */
+    transform: translateX(-50%) translateY(150%); 
     background-color: #103926;
     color: white;
     padding: 1rem 2rem;
@@ -352,7 +336,6 @@
     background-color: #ecfdf5;
 }
 
-/* --- Select All Button in Header --- */
 .waste-select-all-btn {
     background: transparent;
     border: 1px solid #d1fae5;
@@ -362,7 +345,7 @@
     font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
-    margin-left: auto; /* Pushes to right */
+    margin-left: auto; 
     transition: all 0.2s;
 }
 

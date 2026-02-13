@@ -54,17 +54,14 @@ const menuItems = [
 ];
 
 const AdminLayout = () => {
-    // Layout State
     const [mobileOpen, setMobileOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     
-    // Logout Dialog State
     const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
     const navigate = useNavigate();
     const location = useLocation();
 
-    // --- Handlers ---
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -78,25 +75,20 @@ const AdminLayout = () => {
         setAnchorEl(null);
     };
 
-    // 1. Trigger the Dialog
     const handleLogoutClick = () => {
-        handleCloseMenu(); // Close profile menu if open
+        handleCloseMenu(); 
         setLogoutDialogOpen(true);
     };
-
-    // 2. Close Dialog
     const handleLogoutCancel = () => {
         setLogoutDialogOpen(false);
     };
 
-    // 3. Perform Actual Logout
     const handleLogoutConfirm = () => {
         setLogoutDialogOpen(false);
         localStorage.removeItem('adminToken');
         navigate('/');
     };
 
-    // --- Sidebar Content ---
     const drawer = (
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
             <div className="sidebar-header">
@@ -150,7 +142,6 @@ const AdminLayout = () => {
         <Box className="layout-root">
             <CssBaseline />
 
-            {/* --- AppBar --- */}
             <AppBar position="fixed" className="admin-appbar" elevation={0}>
                 <Toolbar>
                     <IconButton
@@ -201,7 +192,6 @@ const AdminLayout = () => {
                                 },
                             }}
                         >
-                            {/* Menu Logout Button */}
                             <MenuItem onClick={handleLogoutClick} dense sx={{ color: '#ef4444', fontWeight: 500 }}>
                                 <Logout fontSize="small" sx={{ mr: 1.5 }} />
                                 Sign Out
@@ -211,12 +201,10 @@ const AdminLayout = () => {
                 </Toolbar>
             </AppBar>
 
-            {/* --- Navigation Drawers --- */}
             <Box
                 component="nav"
                 sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
             >
-                {/* Mobile Drawer */}
                 <Drawer
                     variant="temporary"
                     open={mobileOpen}
@@ -230,7 +218,6 @@ const AdminLayout = () => {
                     {drawer}
                 </Drawer>
 
-                {/* Desktop Drawer */}
                 <Drawer
                     variant="permanent"
                     sx={{
@@ -243,12 +230,10 @@ const AdminLayout = () => {
                 </Drawer>
             </Box>
 
-            {/* --- Main Content --- */}
             <Box component="main" className="main-content">
                 <Outlet />
             </Box>
 
-            {/* --- Logout Confirmation Dialog --- */}
             <Dialog
                 open={logoutDialogOpen}
                 onClose={handleLogoutCancel}

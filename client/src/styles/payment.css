@@ -1,6 +1,4 @@
-/* payment.css */
 
-/* --- Layout --- */
 .payment-container {
     width: 100%;
     max-width: 1400px;
@@ -9,7 +7,6 @@
     padding-bottom: 2rem;
 }
 
-/* --- Header --- */
 .payment-header {
     display: flex;
     justify-content: space-between;
@@ -22,7 +19,7 @@
 .payment-title h1 {
     font-size: 1.8rem;
     font-weight: 800;
-    color: #103926; /* Eco Green */
+    color: #103926; 
     letter-spacing: -0.5px;
     margin-bottom: 0.5rem;
 }
@@ -33,7 +30,6 @@
     margin: 0;
 }
 
-/* --- Controls (Tabs & Search) --- */
 .payment-controls {
     display: flex;
     justify-content: space-between;
@@ -92,7 +88,6 @@
     color: #374151;
 }
 
-/* --- Table Styles --- */
 .payment-table-card {
     background: #ffffff;
     border-radius: 16px !important;
@@ -155,14 +150,12 @@
     font-size: 0.8rem;
 }
 
-/* --- Amount Style --- */
 .amount-text {
     font-weight: 700;
     color: #103926;
     font-size: 1rem;
 }
 
-/* --- Status Pills --- */
 .status-pill {
     display: inline-flex;
     align-items: center;
@@ -192,7 +185,6 @@
     border: 1px solid #fecaca;
 }
 
-/* --- Empty State --- */
 .empty-state {
     padding: 4rem;
     text-align: center;

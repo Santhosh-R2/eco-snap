@@ -1,6 +1,4 @@
-/* viewAllEmployees.css */
 
-/* --- Page Layout --- */
 .page-container {
     width: 100%;
     max-width: 1400px;
@@ -8,7 +6,6 @@
     font-family: 'Inter', sans-serif;
 }
 
-/* --- Header Section --- */
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -21,7 +18,7 @@
 .header-title {
     font-size: 1.75rem;
     font-weight: 800;
-    color: #103926; /* Eco Green */
+    color: #103926; 
     letter-spacing: -0.5px;
 }
 
@@ -31,7 +28,6 @@
     margin-top: 4px;
 }
 
-/* --- Search Bar --- */
 .search-bar-container {
     display: flex;
     align-items: center;
@@ -62,7 +58,6 @@
     color: #374151;
 }
 
-/* --- Table Styles --- */
 .table-card {
     background: #ffffff;
     border-radius: 16px !important;
@@ -99,7 +94,6 @@
     color: #374151 !important;
 }
 
-/* --- Employee Profile Column --- */
 .profile-wrapper {
     display: flex;
     align-items: center;
@@ -128,7 +122,6 @@
     margin-top: 2px;
 }
 
-/* --- Contact Info --- */
 .contact-text {
     font-size: 0.9rem;
     color: #374151;
@@ -139,7 +132,6 @@
     color: #9ca3af;
 }
 
-/* --- Role Badges --- */
 .role-badge {
     padding: 4px 12px;
     border-radius: 50px;
@@ -172,7 +164,6 @@
     color: #4b5563;
 }
 
-/* --- Status Styles --- */
 .status-indicator {
     display: flex;
     align-items: center;
@@ -202,7 +193,6 @@
     background-color: #9ca3af;
 }
 
-/* --- Loading State --- */
 .loading-box {
     display: flex;
     justify-content: center;

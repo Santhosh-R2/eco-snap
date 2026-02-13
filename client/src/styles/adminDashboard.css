@@ -16,7 +16,7 @@
 .dashboard-title {
     font-size: 1.75rem;
     font-weight: 800;
-    color: #103926; /* Dark Green */
+    color: #103926; 
     letter-spacing: -0.5px;
     margin-bottom: 0.5rem;
 }
@@ -37,7 +37,6 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-/* --- KPI Cards Grid --- */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -88,7 +87,6 @@
     font-size: 1.8rem;
 }
 
-/* Specific Card Colors */
 .stat-card.users .icon-box {
     background-color: #eff6ff;
     color: #3b82f6;
@@ -104,10 +102,9 @@
     color: #22c55e;
 }
 
-/* --- Charts Section --- */
 .charts-layout {
     display: grid;
-    grid-template-columns: 1fr 2fr; /* Doughnut takes 1 part, Bar takes 2 parts */
+    grid-template-columns: 1fr 2fr;
     gap: 1.5rem;
 }
 
@@ -136,10 +133,9 @@
     position: relative;
     width: 100%;
     flex-grow: 1;
-    min-height: 350px; /* Ensures good height */
+    min-height: 350px; 
 }
 
-/* --- Loading State --- */
 .loading-container {
     height: 70vh;
     display: flex;
@@ -149,10 +145,9 @@
     gap: 1rem;
 }
 
-/* --- Responsive Design --- */
 @media (max-width: 1024px) {
     .charts-layout {
-        grid-template-columns: 1fr; /* Stack charts on smaller screens */
+        grid-template-columns: 1fr; 
     }
     
     .chart-container {

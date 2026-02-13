@@ -245,7 +245,6 @@ const AdminDashboard = () => {
                     </div>
                 </div>
 
-                {/* Task Card */}
                 <div className="stat-card tasks">
                     <div className="stat-content">
                         <h4>Tasks Completed</h4>

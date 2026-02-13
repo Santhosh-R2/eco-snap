@@ -7,7 +7,6 @@ const { sendCollectionScheduledEmail } = require("../utils/emailService");
 const assignBulkTasks = async (req, res) => {
     let { employeeId, requestIds, requestId, scheduledDate } = req.body;
 
-    // ... [Validation and parsing logic remains the same] ...
     let ids = requestIds || requestId;
     if (typeof ids === 'string' && ids.trim().startsWith('[') && ids.trim().endsWith(']')) {
         try { ids = JSON.parse(ids); } catch (e) {}
@@ -48,15 +47,13 @@ const assignBulkTasks = async (req, res) => {
 
             if (alreadyCollected) continue;
 
-            // --- UPDATED CREATE CALL ---
             const task = await Task.create({
                 employeeId,
                 requestId: id,
                 status: "assigned",
-                assignedAt: new Date(), // Explicitly set assigned time
-                scheduledDate: scheduledDate ? new Date(scheduledDate) : undefined // Save scheduled date
+                assignedAt: new Date(), 
+                scheduledDate: scheduledDate ? new Date(scheduledDate) : undefined 
             });
-            // ---------------------------
             
             tasks.push(task);
 
@@ -66,7 +63,6 @@ const assignBulkTasks = async (req, res) => {
             }
             await WasteRequest.findByIdAndUpdate(id, updateData);
 
-            // Send email notification
             if (scheduledDate) {
                 const user = await User.findById(request.userId).select("name email");
                 const employee = await User.findById(employeeId).select("name");

@@ -30,7 +30,7 @@ const Complaints = () => {
         try {
             const endpoint = `/complaints/${activeTab}`;
             const response = await axios.get(endpoint);
-
+console.log(response.data);
             const pendingComplaints = response.data.filter(c => c.status === 'pending');
             setComplaints(pendingComplaints);
         } catch (error) {

@@ -5,12 +5,14 @@ const {
     getEmployeeTasks,
     updateTaskStatus,
     getAllTasks,
+    getEmployeeTaskHistory,
 } = require("../controllers/Task");
 const { sendTodayReminders } = require("../controllers/Notification");
 
 router.post("/bulk", assignBulkTasks);
 router.get("/", getAllTasks);
 router.get("/employee/:employeeId", getEmployeeTasks);
+router.get("/history/:employeeId", getEmployeeTaskHistory);
 router.put("/:id", updateTaskStatus);
 router.get("/send-reminders", sendTodayReminders);
 

@@ -163,4 +163,31 @@ const updateTaskStatus = async (req, res) => {
     }
 };
 
-module.exports = { assignBulkTasks, getEmployeeTasks, updateTaskStatus, getAllTasks };
+// @desc    Get employee task history (completed tasks)
+const getEmployeeTaskHistory = async (req, res) => {
+    try {
+        const tasks = await Task.find({ 
+            employeeId: req.params.employeeId,
+            status: "completed"
+        })
+        .populate({
+            path: "requestId",
+            populate: {
+                path: "userId",
+                select: "-password",
+            },
+        })
+        .populate({
+            path: "donationId",
+            populate: {
+                path: "userId",
+                select: "-password",
+            },
+        });
+        res.json(tasks);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { assignBulkTasks, getEmployeeTasks, updateTaskStatus, getAllTasks, getEmployeeTaskHistory };

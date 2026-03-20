@@ -327,7 +327,7 @@ const WasteRequest = () => {
               <span>{selectedRequestIds.length}</span> Requests Selected
           </div>
           <button className="waste-bulk-btn" onClick={handleBulkAssignClick}>
-              Assign to Driver
+              Assign Worker
           </button>
       </div>
 
@@ -386,10 +386,10 @@ const WasteRequest = () => {
           <Box sx={{ pt: 3, display: 'flex', flexDirection: 'column', gap: 3 }}>
             
             <FormControl fullWidth>
-              <InputLabel>Assign Driver / Collector</InputLabel>
+              <InputLabel>Assign Collector</InputLabel>
               <Select
                 value={selectedEmployee}
-                label="Assign Driver / Collector"
+                label="Assign Collector"
                 onChange={(e) => setSelectedEmployee(e.target.value)}
                 sx={{ borderRadius: '12px' }}
               >

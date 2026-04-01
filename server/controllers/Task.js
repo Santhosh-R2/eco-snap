@@ -23,6 +23,22 @@ const assignBulkTasks = async (req, res) => {
         const now = new Date();
         const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
 
+        const employee = await User.findById(employeeId);
+        if (!employee) {
+            return res.status(404).json({ message: "Employee not found" });
+        }
+
+        const workerDetails = {
+            location: employee.location,
+            _id: employee._id,
+            name: employee.name,
+            email: employee.email,
+            role: employee.role,
+            phone: employee.phone,
+            address: employee.address,
+            profileImage: employee.profileImage
+        };
+
         for (const id of requestIds) {
             const request = await WasteRequest.findById(id);
             if (!request) continue;
@@ -57,7 +73,10 @@ const assignBulkTasks = async (req, res) => {
             
             tasks.push(task);
 
-            const updateData = { status: "scheduled" };
+            const updateData = { 
+                status: "scheduled",
+                user: workerDetails 
+            };
             if (scheduledDate) {
                 updateData.scheduledDate = new Date(scheduledDate);
             }

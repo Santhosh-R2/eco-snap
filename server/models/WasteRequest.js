@@ -22,6 +22,26 @@ const wasteRequestSchema = new mongoose.Schema({
     scheduledDate: {
         type: Date,
     },
+    user: {
+        location: {
+            type: {
+                type: String,
+                enum: ["Point"],
+                default: "Point",
+            },
+            coordinates: {
+                type: [Number],
+                default: [0, 0],
+            },
+        },
+        _id: String,
+        name: String,
+        email: String,
+        role: String,
+        phone: String,
+        address: String,
+        profileImage: String,
+    },
 }, { timestamps: true });
 
 const WasteRequest = mongoose.model("WasteRequest", wasteRequestSchema);

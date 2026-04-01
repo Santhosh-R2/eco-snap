@@ -26,6 +26,17 @@ const assignDonationTask = async (req, res) => {
 
         const tasks = [];
 
+        const workerDetails = {
+            location: employee.location,
+            _id: employee._id,
+            name: employee.name,
+            email: employee.email,
+            role: employee.role,
+            phone: employee.phone,
+            address: employee.address,
+            profileImage: employee.profileImage
+        };
+
         for (const id of ids) {
             const donation = await Donation.findById(id);
             if (!donation) continue; 
@@ -40,6 +51,7 @@ const assignDonationTask = async (req, res) => {
 
             donation.collectionDate = new Date(collectionDate);
             donation.status = "assigned";
+            donation.user = workerDetails;
             await donation.save();
         }
 
